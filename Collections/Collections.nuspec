@@ -3,7 +3,7 @@
 	<metadata>
 		<id>$id$</id>
 		<version>$version$</version>
-		<authors>$author$</authors>
+		<authors>Smartrak</authors>
 		<description>Helpers for dealing with collections</description>
 		<projectUrl>https://github.com/Smartrak/Smartrak.Library</projectUrl>
 		<licenseUrl>https://raw.githubusercontent.com/Smartrak/Smartrak.Library/master/LICENSE</licenseUrl>
