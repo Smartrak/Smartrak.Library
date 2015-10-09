@@ -42,12 +42,14 @@ namespace NugetPackageTrimmer
 
 					ProcessStartInfo start = new ProcessStartInfo();
 					// Enter in the command line arguments, everything you would enter after the executable name itself
-					start.Arguments = $"push \"{nupkg}\" -ApiKey {args[2]} -Source {repoUrl} -NonInteractive";
+					start.Arguments = $"push \"{nupkg}\" -ApiKey {args[2]} -NonInteractive";
 					// Enter the executable to run, including the complete path
 					start.FileName = args[1];
 					// Do you want to show a console window?
 					start.WindowStyle = ProcessWindowStyle.Hidden;
 					start.CreateNoWindow = true;
+					start.UseShellExecute = false;
+					//start.
 					int exitCode;
 
 					using (Process proc = Process.Start(start))
