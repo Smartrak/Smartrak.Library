@@ -49,6 +49,8 @@ namespace NugetPackageTrimmer
 					start.WindowStyle = ProcessWindowStyle.Hidden;
 					start.CreateNoWindow = true;
 					start.UseShellExecute = false;
+					start.RedirectStandardOutput = true;
+					start.RedirectStandardError = true;
 					//start.
 					int exitCode;
 
@@ -58,6 +60,7 @@ namespace NugetPackageTrimmer
 
 						// Retrieve the app's exit code
 						exitCode = proc.ExitCode;
+						Console.Out.Write(proc.StandardOutput.ReadToEnd());
 					}
 
 					if (exitCode != 0)
