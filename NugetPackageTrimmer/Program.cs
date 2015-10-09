@@ -9,10 +9,10 @@ namespace NugetPackageTrimmer
 		static void Main(string[] args)
 		{
 			var repoUrl = args.Length > 2 ? args[1] : "https://packages.nuget.org/api/v2";
-			var repo = PackageRepositoryFactory.Default.CreateRepository(repoUrl);
 
 			Console.WriteLine($"Checking if packages in [{args[0]}] exist in {repoUrl} and deleting any that dont need deploying...");
 
+			var repo = PackageRepositoryFactory.Default.CreateRepository(repoUrl);
 
 			foreach (var nupkg in Directory.EnumerateFiles(args[0], "*.nupkg"))
 			{
