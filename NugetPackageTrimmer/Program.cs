@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using NuGet;
@@ -7,9 +8,9 @@ namespace NugetPackageTrimmer
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
-			var repoUrl = args.Length > 3 ? args[2] : "https://packages.nuget.org/api/v2";
+			var repoUrl = args.Length > 4 ? args[3] : "https://packages.nuget.org/api/v2";
 
 			Console.WriteLine($"Checking if packages in [{args[0]}] exist in {repoUrl} and deleting any that dont need deploying...");
 
@@ -26,26 +27,45 @@ namespace NugetPackageTrimmer
 				Console.WriteLine($"Checking nuget package : {nupkg}");
 				var package = new OptimizedZipPackage(nupkg);
 
-				if (repo.Exists(package))
+				if (nupkg.EndsWith(".symbols.nupkg"))
+				{
+					Console.WriteLine("That package is symbols, skipping...");
+				}
+				else if (repo.Exists(package))
 				{
 					Console.WriteLine("That package already exists, skipping...");
-					File.Delete(nupkg);
 				}
 				else
 				{
 					Console.WriteLine("That package isnt in nuget yet, pushing...");
-					// Push the package to the server
-					var sourceUri = new Uri(repoUrl);
 
-					packageServer.PushPackage(
-						args[1],
-						package,
-						new FileInfo(nupkg).Length,
-						Convert.ToInt32(new TimeSpan(0, 0, 1, 0, 0).TotalMilliseconds),
-						false);
+
+					ProcessStartInfo start = new ProcessStartInfo();
+					// Enter in the command line arguments, everything you would enter after the executable name itself
+					start.Arguments = $"push \"{nupkg}\" -ApiKey {args[2]} -Source {repoUrl} -NonInteractive";
+					// Enter the executable to run, including the complete path
+					start.FileName = args[1];
+					// Do you want to show a console window?
+					start.WindowStyle = ProcessWindowStyle.Hidden;
+					start.CreateNoWindow = true;
+					int exitCode;
+
+					using (Process proc = Process.Start(start))
+					{
+						proc.WaitForExit();
+
+						// Retrieve the app's exit code
+						exitCode = proc.ExitCode;
+					}
+
+					if (exitCode != 0)
+					{
+						return exitCode;
+					}
 					Console.WriteLine("Pushed");
 				}
 			}
+			return 0;
 		}
 	}
 }
