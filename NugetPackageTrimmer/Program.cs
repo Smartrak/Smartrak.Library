@@ -12,7 +12,7 @@ namespace NugetPackageTrimmer
 		{
 			var repoUrl = args.Length > 4 ? args[3] : "https://packages.nuget.org/api/v2";
 
-			Console.WriteLine($"Checking if packages in [{args[0]}] exist in {repoUrl} and deleting any that dont need deploying...");
+			Console.WriteLine($"Checking if packages in [{args[0]}] exist in {repoUrl} and pushing if they dont. [nuget path: {args[1]}]");
 
 			var repo = PackageRepositoryFactory.Default.CreateRepository(repoUrl);
 
