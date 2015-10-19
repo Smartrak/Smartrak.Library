@@ -13,7 +13,7 @@ namespace Smartrak.Collections.Paging
 		/// <param name="page">the 1 indexed page number you are interested in, cannot be zero or negative</param>
 		/// <param name="pageSize">the size of the page you want, cannot be zero or negative</param>
 		/// <returns>A queryable of the page of entities with counts appended.</returns>
-		public static IQueryable<EntityWithCount<T>> GetPageWithTotalzzz<T>(this IQueryable<T> entities, int page, int pageSize) where T : class
+		public static IQueryable<EntityWithCount<T>> GetPageWithTotal<T>(this IQueryable<T> entities, int page, int pageSize) where T : class
 		{
 			if (entities == null)
 			{
