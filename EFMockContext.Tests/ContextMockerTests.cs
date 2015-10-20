@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 using FakeDbSet;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace Smartrak.EFMockContext.Tests
 {
@@ -16,21 +16,20 @@ namespace Smartrak.EFMockContext.Tests
 		public int Id { get; set; }
 	}
 
-	[TestClass]
+	[TestFixture]
 	public class ContextMockerTests
 	{
-		[TestMethod]
+		[Test]
 		public void TestPropertiesCreated()
 		{
 			var sut = ContextMocker.CreateMockContext<ITestContext>();
 
-
-			Assert.IsInstanceOfType(sut.Entity1s, typeof(InMemoryDbSet<Entity>));
-			Assert.IsInstanceOfType(sut.Entity2s, typeof(InMemoryDbSet<Entity>));
-			Assert.AreNotEqual(sut.Entity1s, sut.Entity2s);
+			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity1s);
+			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity2s);
+			Assert.IsFalse(sut.Entity1s == sut.Entity2s);
 		}
 
-		[TestMethod]
+		[Test]
 		public void SaveChangesDoesntFail()
 		{
 			var sut = ContextMocker.CreateMockContext<ITestContext>();
