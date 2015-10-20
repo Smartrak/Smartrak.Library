@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections", "Collections\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetPackageTrimmer", "NugetPackageTrimmer\NugetPackageTrimmer.csproj", "{FB510DEA-B7D5-48EA-9B0B-754CA957C6B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFMockContext", "EFMockContext\EFMockContext.csproj", "{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFMockContext.Tests", "EFMockContext.Tests\EFMockContext.Tests.csproj", "{EF7EB34B-3BC6-4C54-90F9-864850585850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{FB510DEA-B7D5-48EA-9B0B-754CA957C6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB510DEA-B7D5-48EA-9B0B-754CA957C6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB510DEA-B7D5-48EA-9B0B-754CA957C6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
