@@ -48,3 +48,7 @@ Add an AssemblyInformationalVersion to the assemblyinfo of the project with a 3 
  - Projects shouldn't directly refer to other packages in library. If they do nuget wont correctly determine the relationsip between packages
  - Packages should be small and concise. They should be about one thing only. 
  - Packages should reference a minimal amount of other nuget packages, too many and they are complicated to maintain
+
+### Not from Smartrak?
+
+No problems, if you have a fix or something to add we love to get pull requests. Just give us a clear description of what you are trying to achieve in the pull request
