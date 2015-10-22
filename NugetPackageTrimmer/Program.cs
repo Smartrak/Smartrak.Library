@@ -31,10 +31,10 @@ namespace NugetPackageTrimmer
 				{
 					Console.WriteLine("That package is symbols, skipping...");
 				}
-				//else if (repo.Exists(package))
-				//{
-				//	Console.WriteLine("That package already exists, skipping...");
-				//}
+				else if (repo.Exists(package))
+				{
+					Console.WriteLine("That package already exists, skipping...");
+				}
 				else
 				{
 					Console.WriteLine("That package isnt in nuget yet, pushing...");
