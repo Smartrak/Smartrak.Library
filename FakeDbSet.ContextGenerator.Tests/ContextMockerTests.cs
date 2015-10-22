@@ -5,8 +5,8 @@ namespace FakeDbSet.ContextGenerator.Tests
 {
 	public interface ITestContext
 	{
-		IDbSet<Entity> Entity1s { get; set; }
-		IDbSet<Entity> Entity2s { get; set; }
+		IDbSet<Entity> Entity1s { get; }
+		IDbSet<Entity> Entity2s { get; }
 		int SaveChanges();
 	}
 
@@ -26,6 +26,7 @@ namespace FakeDbSet.ContextGenerator.Tests
 			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity1s);
 			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity2s);
 			Assert.IsFalse(sut.Entity1s == sut.Entity2s);
+			Assert.IsTrue(sut.Entity1s == sut.Entity1s);
 		}
 
 		[Test]

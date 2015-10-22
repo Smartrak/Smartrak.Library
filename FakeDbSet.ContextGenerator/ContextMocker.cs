@@ -24,7 +24,7 @@ namespace FakeDbSet.ContextGenerator
 			{
 				var body = Expression.PropertyOrField(parameter, iDbSetProperty.Name);
 				var lambdaExpression = Expression.Lambda<Func<T, object>>(body, parameter);
-				mockContext.SetupProperty(lambdaExpression, Activator.CreateInstance(typeof(FakeDbSet.InMemoryDbSet<>).MakeGenericType(iDbSetProperty.PropertyType.GenericTypeArguments), args: clearDownExistingData));
+				mockContext.SetupGet(lambdaExpression).Returns(Activator.CreateInstance(typeof(FakeDbSet.InMemoryDbSet<>).MakeGenericType(iDbSetProperty.PropertyType.GenericTypeArguments), args: clearDownExistingData));
 			}
 
 			return mockContext.Object;
