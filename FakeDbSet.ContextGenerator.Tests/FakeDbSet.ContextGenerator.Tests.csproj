@@ -75,9 +75,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EFMockContext\EFMockContext.csproj">
+    <ProjectReference Include="..\FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj">
       <Project>{fa90ebcc-cbc8-48bb-9ea5-466f0af198cd}</Project>
-      <Name>EFMockContext</Name>
+      <Name>FakeDbSet.ContextGenerator</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

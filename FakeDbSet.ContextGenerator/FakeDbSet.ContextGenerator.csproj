@@ -7,8 +7,8 @@
     <ProjectGuid>{FA90EBCC-CBC8-48BB-9EA5-466F0AF198CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Smartrak.EFMockContext</RootNamespace>
-    <AssemblyName>Smartrak.EFMockContext</AssemblyName>
+    <RootNamespace>FakeDbSet.ContextGenerator</RootNamespace>
+    <AssemblyName>FakeDbSet.ContextGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="EFMockContext.nuspec" />
+    <None Include="FakeDbSet.ContextGenerator.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

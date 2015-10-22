@@ -4,14 +4,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 
-namespace Smartrak.EFMockContext
+namespace FakeDbSet.ContextGenerator
 {
-	public static class ContextMocker
+	public static class ContextGenerator
 	{
-		public static T CreateMockContext<T>(bool clearDownExistingData = false) where T : class
+		public static T Generate<T>(bool clearDownExistingData = false) where T : class
 		{
 			var mockContext = new Mock<T>();
 			var parameter = Expression.Parameter(typeof(T));
+
+			if (typeof(T).GetMethod("SaveChanges") != null)
+			{
+				var body = Expression.Call(parameter, typeof(T).GetMethod("SaveChanges"));
+				var lambdaExpression = Expression.Lambda<Func<T, int>>(body, parameter);
+				mockContext.Setup(lambdaExpression).Returns(0);
+			}
 
 			foreach (var iDbSetProperty in typeof(T).GetProperties().Where(p => p.PropertyType.IsGenericType && p.PropertyType.GetGenericTypeDefinition() == typeof(IDbSet<>)))
 			{

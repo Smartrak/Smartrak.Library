@@ -1,8 +1,7 @@
 ﻿using System.Data.Entity;
-using FakeDbSet;
 using NUnit.Framework;
 
-namespace Smartrak.EFMockContext.Tests
+namespace FakeDbSet.ContextGenerator.Tests
 {
 	public interface ITestContext
 	{
@@ -22,7 +21,7 @@ namespace Smartrak.EFMockContext.Tests
 		[Test]
 		public void TestPropertiesCreated()
 		{
-			var sut = ContextMocker.CreateMockContext<ITestContext>();
+			var sut = ContextGenerator.Generate<ITestContext>();
 
 			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity1s);
 			Assert.IsInstanceOf<InMemoryDbSet<Entity>>(sut.Entity2s);
@@ -32,7 +31,7 @@ namespace Smartrak.EFMockContext.Tests
 		[Test]
 		public void SaveChangesDoesntFail()
 		{
-			var sut = ContextMocker.CreateMockContext<ITestContext>();
+			var sut = ContextGenerator.Generate<ITestContext>();
 
 			var res = sut.SaveChanges();
 
