@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeDbSet.ContextGenerator"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeDbSet.ContextGenerator.Tests", "FakeDbSet.ContextGenerator.Tests\FakeDbSet.ContextGenerator.Tests.csproj", "{EF7EB34B-3BC6-4C54-90F9-864850585850}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collections.Tests", "Collections.Tests\Collections.Tests.csproj", "{4A641372-75A4-4163-A2AA-84D7843058D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF7EB34B-3BC6-4C54-90F9-864850585850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A641372-75A4-4163-A2AA-84D7843058D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A641372-75A4-4163-A2AA-84D7843058D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A641372-75A4-4163-A2AA-84D7843058D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A641372-75A4-4163-A2AA-84D7843058D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

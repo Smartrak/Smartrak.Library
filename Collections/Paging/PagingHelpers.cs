@@ -30,7 +30,7 @@ namespace Smartrak.Collections.Paging
 
 			return entities
 				.Select(e => new EntityWithCount<T> { Entity = e, Count = entities.Count() })
-				.Skip(page - 1 * pageSize)
+				.Skip((page - 1) * pageSize)
 				.Take(pageSize);
 		}
 	}
