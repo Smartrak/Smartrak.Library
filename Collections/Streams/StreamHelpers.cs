@@ -12,7 +12,7 @@ namespace Smartrak.Collections.Streams
 	/// </summary>
 	public static class StreamHelpers
 	{
-		public static IEnumerable<string> ReadLines(this Func<Stream> streamProvider, Encoding encoding)
+		public static IEnumerable<string> ReadLines(Func<Stream> streamProvider, Encoding encoding)
 		{
 			using (var stream = streamProvider())
 			using (var reader = new StreamReader(stream, encoding))
