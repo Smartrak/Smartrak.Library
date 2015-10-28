@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Smartrak.Collections.Streams;
-using NUnit.Framework;
+﻿using System.Linq;
 using System.Text;
+using NUnit.Framework;
 
-namespace Smartrak.Collections.Tests
+namespace System.IO.Contrib.Tests
 {
 	[TestFixture]
 	public class StreamTests
@@ -26,7 +22,7 @@ namespace Smartrak.Collections.Tests
 		{
 			var result = StreamHelpers.ReadLines(() => GenerateStreamFromString(@"aaaaa
 bbbbb
-ccccc"),Encoding.UTF8).ToArray();
+ccccc"), Encoding.UTF8).ToArray();
 			Assert.AreEqual(3, result.Count());
 			Assert.AreEqual("aaaaa", result[0]);
 			Assert.AreEqual("bbbbb", result[1]);

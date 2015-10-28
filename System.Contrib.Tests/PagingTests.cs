@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 
-namespace Smartrak.Collections.Paging.Tests
+namespace System.Linq.Contrib.Paging.Tests
 {
 	public class Entity
 	{

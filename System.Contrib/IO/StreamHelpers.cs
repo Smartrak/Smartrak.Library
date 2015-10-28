@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Smartrak.Collections.Streams
+namespace System.IO.Contrib
 {
 	/// <summary>
 	/// Reads all lines from a stream as an enumerable.

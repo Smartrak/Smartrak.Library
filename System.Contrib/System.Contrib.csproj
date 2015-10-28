@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FE8EC7A7-1CDE-4A28-A7AB-0D9B4ECCE701}</ProjectGuid>
+    <ProjectGuid>{AC97934A-BBBC-488B-B337-A11BF4C98E97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Smartrak.Collections</RootNamespace>
-    <AssemblyName>Smartrak.Collections</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>System.Contrib</RootNamespace>
+    <AssemblyName>System.Contrib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -41,14 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Paging\EntityWithCount.cs" />
-    <Compile Include="Paging\PagingHelpers.cs" />
+    <Compile Include="IO\StreamHelpers.cs" />
+    <Compile Include="Linq\Paging\EntityWithCount.cs" />
+    <Compile Include="Linq\Paging\PagingHelpers.cs" />
+    <Compile Include="Parsing\ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Streams\StreamHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Collections.nuspec" />
+    <None Include="Readme.md" />
+    <None Include="System.Contrib.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

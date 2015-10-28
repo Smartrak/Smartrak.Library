@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4A641372-75A4-4163-A2AA-84D7843058D3}</ProjectGuid>
+    <ProjectGuid>{F29694E1-F7C7-47CF-BC29-62FD15FCD605}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Smartrak.Collections.Tests</RootNamespace>
-    <AssemblyName>Smartrak.Collections.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>System.Contrib.Tests</RootNamespace>
+    <AssemblyName>System.Contrib.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,13 +50,13 @@
     <Compile Include="StreamTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\System.Contrib\System.Contrib.csproj">
+      <Project>{ac97934a-bbbc-488b-b337-a11bf4c98e97}</Project>
+      <Name>System.Contrib</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Collections\Collections.csproj">
-      <Project>{fe8ec7a7-1cde-4a28-a7ab-0d9b4ecce701}</Project>
-      <Name>Collections</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

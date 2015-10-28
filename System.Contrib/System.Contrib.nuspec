@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Smartrak.Collections</id>
-		<version>1.0.0</version>
+		<id>$id$</id>
+		<version>$version$</version>
 		<authors>Smartrak</authors>
-		<description>Helpers for dealing with collections[Deprecated]</description>
-		<projectUrl>https://github.com/Smartrak/Smartrak.Library</projectUrl>
+		<description>Extensions on top of root dotnet classes</description>
+		<projectUrl>https://github.com/Smartrak/Smartrak.Library/$id$</projectUrl>
 		<licenseUrl>https://raw.githubusercontent.com/Smartrak/Smartrak.Library/master/LICENSE</licenseUrl>
 	</metadata>
 </package>

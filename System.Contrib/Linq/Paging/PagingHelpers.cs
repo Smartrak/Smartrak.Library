@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace Smartrak.Collections.Paging
+﻿namespace System.Linq.Contrib.Paging
 {
 	public static class PagingHelpers
 	{
