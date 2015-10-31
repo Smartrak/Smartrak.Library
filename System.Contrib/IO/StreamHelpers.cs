@@ -21,5 +21,24 @@ namespace System.IO.Contrib
 				}
 			}
 		}
+
+		/// <summary>
+		/// Converts a stream to an array of bytes. Based on: http://stackoverflow.com/a/221941/1070291
+		/// </summary>
+		/// <param name="input">A stream</param>
+		/// <returns>An array of bytes contained in the stream</returns>
+		public static byte[] ToBytes(this Stream input)
+		{
+			byte[] buffer = new byte[16 * 1024];
+			using (MemoryStream ms = new MemoryStream())
+			{
+				int read;
+				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+				{
+					ms.Write(buffer, 0, read);
+				}
+				return ms.ToArray();
+			}
+		}
 	}
 }
