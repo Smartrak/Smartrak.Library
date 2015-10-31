@@ -28,5 +28,15 @@ ccccc"), Encoding.UTF8).ToArray();
 			Assert.AreEqual("bbbbb", result[1]);
 			Assert.AreEqual("ccccc", result[2]);
 		}
+
+		[Test]
+		public void StreamToBytes()
+		{
+			var result = GenerateStreamFromString("abc").ToBytes();
+			Assert.AreEqual(3, result.Count());
+			Assert.AreEqual('a', result[0]);
+			Assert.AreEqual('b', result[1]);
+			Assert.AreEqual('c', result[2]);
+		}
 	}
 }
