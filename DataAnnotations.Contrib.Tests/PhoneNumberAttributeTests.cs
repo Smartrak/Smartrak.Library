@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace DataAnnotations.Contrib.Tests
 {
-	[TestClass]
+	[TestFixture]
 	public class PhoneNumberAttributeTests
 	{
-		[TestMethod]
+		[Test]
 		public void PhoneNumbersNoCountry()
 		{
 			var sut = new PhoneNumberAttribute();
@@ -22,7 +22,7 @@ namespace DataAnnotations.Contrib.Tests
 			Assert.IsFalse(sut.IsValid("+64 21 000 00")); //invalid number as too short
 			Assert.IsFalse(sut.IsValid("+64 21 000 000000")); //invalid number as too long
 		}
-		[TestMethod]
+		[Test]
 		public void PhoneNumbersCountry()
 		{
 			var sut = new PhoneNumberAttribute("NZ");
