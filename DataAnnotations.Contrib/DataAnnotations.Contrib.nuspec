@@ -4,7 +4,7 @@
 		<id>$id$</id>
 		<version>$version$</version>
 		<authors>Smartrak</authors>
-		<description>Extensions on top of root dotnet classes</description>
+		<description>Additional data annotations</description>
 		<projectUrl>https://github.com/Smartrak/Smartrak.Library/$id$</projectUrl>
 		<licenseUrl>https://raw.githubusercontent.com/Smartrak/Smartrak.Library/master/LICENSE</licenseUrl>
 	</metadata>
