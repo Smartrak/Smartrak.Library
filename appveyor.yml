@@ -13,9 +13,10 @@ build:
   project: Library.sln
 
 after_build:
-  - nuget pack -Symbols -Properties Configuration=Release DataAnnotations.Contrib\DataAnnotations.Contrib.csproj
-  - nuget pack -Symbols -Properties Configuration=Release FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj
-  - nuget pack -Symbols -Properties Configuration=Release System.Contrib\System.Contrib.csproj
+  - mkdir _nugetpackages
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages DataAnnotations.Contrib\DataAnnotations.Contrib.csproj
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages System.Contrib\System.Contrib.csproj
 artifacts:
-  - path: '**\*.nupkg'
+  - path: '_nugetpackages\*.nupkg'
   
