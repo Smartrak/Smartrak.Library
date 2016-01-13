@@ -2,14 +2,20 @@ cache:
   - packages -> **\packages.config
 nuget:
   project_feed: true
+  disable_publish_on_pr: true
 configuration:
   - Release
 
 before_build:
   - nuget restore
+
 build:
   project: Library.sln
+
 after_build:
   - nuget pack -Symbols -Properties Configuration=Release DataAnnotations.Contrib\DataAnnotations.Contrib.csproj
   - nuget pack -Symbols -Properties Configuration=Release FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj
   - nuget pack -Symbols -Properties Configuration=Release System.Contrib\System.Contrib.csproj
+artifacts:
+  - path: '**\*.nupkg'
+  
