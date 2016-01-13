@@ -2,6 +2,8 @@ cache:
   - packages -> **\packages.config
 nuget:
   project_feed: true
+configuration:
+  - Release
 
 before_build:
   - nuget restore
