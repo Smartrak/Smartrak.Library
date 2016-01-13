@@ -1,8 +1,13 @@
+cache:
+  - packages -> **\packages.config
+nuget:
+  project_feed: true
+
 before_build:
   - nuget restore
 build:
   project: Library.sln
 after_build:
-  - nuget pack *\*.nuspec
-artifacts:
-  - path: '**\*.nupkg'
+  - nuget pack DataAnnotations.Contrib\DataAnnotations.Contrib.nuspec
+  - nuget pack FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.nuspec
+  - nuget pack System.Contrib\System.Contrib.nuspec
