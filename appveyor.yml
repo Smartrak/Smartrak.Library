@@ -2,3 +2,7 @@ before_build:
   - nuget restore
 build:
   project: Library.sln
+after_build:
+  - nuget pack *\*.nuspec
+artifacts:
+  - path: '**\*.nupkg'
