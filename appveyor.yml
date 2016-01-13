@@ -10,6 +10,6 @@ before_build:
 build:
   project: Library.sln
 after_build:
-  - nuget pack DataAnnotations.Contrib\DataAnnotations.Contrib.nuspec
-  - nuget pack FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.nuspec
-  - nuget pack System.Contrib\System.Contrib.nuspec
+  - nuget pack -Symbols -Properties Configuration=Release DataAnnotations.Contrib\DataAnnotations.Contrib.csproj
+  - nuget pack -Symbols -Properties Configuration=Release FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj
+  - nuget pack -Symbols -Properties Configuration=Release System.Contrib\System.Contrib.csproj
