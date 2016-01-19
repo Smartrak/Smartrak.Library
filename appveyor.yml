@@ -1,0 +1,22 @@
+cache:
+  - packages -> **\packages.config
+nuget:
+  project_feed: true
+  disable_publish_on_pr: true
+configuration:
+  - Release
+
+before_build:
+  - nuget restore
+
+build:
+  project: Library.sln
+
+after_build:
+  - mkdir _nugetpackages
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages DataAnnotations.Contrib\DataAnnotations.Contrib.csproj
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages FakeDbSet.ContextGenerator\FakeDbSet.ContextGenerator.csproj
+  - nuget pack -Symbols -Properties Configuration=Release -OutputDirectory _nugetpackages System.Contrib\System.Contrib.csproj
+artifacts:
+  - path: '_nugetpackages\*.nupkg'
+  

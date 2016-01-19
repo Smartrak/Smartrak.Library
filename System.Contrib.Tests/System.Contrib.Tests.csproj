@@ -48,6 +48,7 @@
     <Compile Include="PagingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamTests.cs" />
+    <Compile Include="StringManipulationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Contrib\System.Contrib.csproj">

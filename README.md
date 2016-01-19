@@ -1,5 +1,7 @@
 # Smartrak.Library
 
+[![Build Passing?](https://ci.appveyor.com/api/projects/status/3bld4sod307tht59?svg=true)](https://ci.appveyor.com/project/Smartrak/smartrak-library)
+
 Smartrak library is a place to put cool helpers and non-proprietary tools used by smartrak. Projects in the library are automatically published to Smartrak's public nuget account.
 
 ### I have something cool, where should I put it?
