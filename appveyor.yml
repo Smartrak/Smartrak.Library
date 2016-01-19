@@ -22,8 +22,8 @@ deploy:
   
 notifications:
 - provider: Slack
-  incoming_webhook: 
-    secure: RUjX27MQa7MuabhbrBpQPrfdXnh97f6caMiwSr7s76aO37Ku3UapXPH++Z/tJQF0VaYu3XR3sn7ZSO7nAh8OJclKEr+JwgmNCCNgZxJqe8g=
+  auth_token:
+    secure: JD81X3zvuMSlPRSKi5RVkSF8XIcjfskQA5cXUjZxP0wQEWvoczzoHA95AB3nugWo9hfDet+aTlBOgLqMOcEsyg==
   channel: development
   on_build_success: false
   on_build_failure: false
