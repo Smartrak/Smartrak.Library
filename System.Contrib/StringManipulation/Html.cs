@@ -1,6 +1,6 @@
 ﻿namespace System.Contrib.StringManipulation
 {
-	public statzic class Html
+	public static class Html
 	{
 		/// <summary>
 		/// Removes HTML tags from the string and returns it
