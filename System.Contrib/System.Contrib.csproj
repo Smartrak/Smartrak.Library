@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dictionary\IDictionaryExtensions.cs" />
     <Compile Include="IO\StreamHelpers.cs" />
     <Compile Include="Linq\Paging\EntityWithCount.cs" />
     <Compile Include="Linq\Paging\PagingHelpers.cs" />
