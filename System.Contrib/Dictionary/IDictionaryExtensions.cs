@@ -103,5 +103,25 @@ namespace System.Contrib.Dictionary
 		}
 
 		#endregion
+
+		#region ToJson
+
+		/// <summary>
+		/// Converts to a dictionary with string key and object value.
+		/// This is compatible with the ASP.NET MVC Json() method.
+		/// </summary>
+		public static Dictionary<string, object> ToStringKeyObjectValue<TKey, TValue>(this Dictionary<TKey, TValue> input)
+		{
+			var output = new Dictionary<string, object>(input.Count);
+
+			foreach (var pair in input)
+			{
+				output.Add(pair.Key.ToString(), pair.Value);
+			}
+
+			return output;
+		}
+
+		#endregion
 	}
 }
