@@ -43,6 +43,10 @@
   <ItemGroup>
     <Compile Include="Dictionary\IDictionaryExtensions.cs" />
     <Compile Include="Dictionary\InsertOrderedDictionary.cs" />
+    <Compile Include="Enumeration\EnumExtensions.cs" />
+    <Compile Include="Enumeration\EnumUtil.cs" />
+    <Compile Include="Enumeration\EnumValue.cs" />
+    <Compile Include="Enumeration\ThrowHelper.cs" />
     <Compile Include="IO\StreamHelpers.cs" />
     <Compile Include="Linq\Paging\EntityWithCount.cs" />
     <Compile Include="Linq\Paging\PagingHelpers.cs" />
