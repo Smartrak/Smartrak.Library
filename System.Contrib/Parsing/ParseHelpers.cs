@@ -1,4 +1,4 @@
-﻿namespace System.Contrib
+﻿namespace System.Contrib.Parsing
 {
 	public static class ParseHelpers
 	{
@@ -8,24 +8,28 @@
 			if (int.TryParse(s, out i)) return i;
 			return null;
 		}
+
 		public static double? ToDouble(this string s)
 		{
 			double i;
 			if (double.TryParse(s, out i)) return i;
 			return null;
 		}
+
 		public static float? ToFloat(this string s)
 		{
 			float i;
 			if (float.TryParse(s, out i)) return i;
 			return null;
 		}
+
 		public static decimal? ToDecimal(this string s)
 		{
 			decimal i;
 			if (decimal.TryParse(s, out i)) return i;
 			return null;
 		}
+
 		public static short? ToShort(this string s)
 		{
 			short i;
@@ -40,10 +44,10 @@
 			return null;
 		}
 
-		public static DateTime? ToDateTime(this string s)
+		public static System.DateTime? ToDateTime(this string s)
 		{
-			DateTime x;
-			if (DateTime.TryParse(s, out x)) return x;
+			System.DateTime x;
+			if (System.DateTime.TryParse(s, out x)) return x;
 			return null;
 		}
 

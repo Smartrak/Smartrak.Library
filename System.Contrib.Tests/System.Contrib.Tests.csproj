@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeExtensionsTests.cs" />
     <Compile Include="EnumExtensionsTests.cs" />
     <Compile Include="EnumUtilTests.cs" />
     <Compile Include="EnumValueTests.cs" />
