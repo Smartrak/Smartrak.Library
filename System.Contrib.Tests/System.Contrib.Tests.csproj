@@ -49,6 +49,7 @@
     <Compile Include="EnumExtensionsTests.cs" />
     <Compile Include="EnumUtilTests.cs" />
     <Compile Include="EnumValueTests.cs" />
+    <Compile Include="IDictionaryExtensionsTests.cs" />
     <Compile Include="InsertOrderedDictionaryTests.cs" />
     <Compile Include="PagingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
