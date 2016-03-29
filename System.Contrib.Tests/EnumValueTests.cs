@@ -19,7 +19,7 @@ namespace System.Contrib.Tests
 			Assert.AreEqual(Enum.Parse(typeof(TestEnum), "Value4"), enumValue.Enum);
 			Assert.AreEqual(4, enumValue.Id);
 			Assert.AreEqual("Value4", enumValue.Name);
-			Assert.AreEqual("", enumValue.Description);
+			Assert.AreEqual(null, enumValue.Description);
 			Assert.IsFalse(enumValue.Obsolete);
 		}
 

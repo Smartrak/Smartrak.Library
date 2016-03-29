@@ -59,7 +59,7 @@ namespace System.Contrib.Tests
 		#region GetDescription() tests
 
 		[Test]
-		public void GetDescriptionReturnsEmptyStringWhenNoDescriptionTest()
+		public void GetDescriptionReturnsNullWhenNoDescriptionTest()
 		{
 			// Arrange
 			const TestFlagsEnum enumValue = TestFlagsEnum.C;
@@ -68,7 +68,7 @@ namespace System.Contrib.Tests
 			var description = enumValue.GetDescription();
 
 			// Assert
-			Assert.AreEqual("", description);
+			Assert.IsNull(description);
 		}
 
 		[Test]

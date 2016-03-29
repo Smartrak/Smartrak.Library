@@ -30,12 +30,25 @@ namespace System.Contrib.Enumeration
 		}
 
 		/// <summary>
+		/// Gets the string representation of the selected value of the given attribute on this enum.
+		/// If this is a [Flags] enum, or there are multiple of the same attribute, the selected values will be comma separated.
+		/// Returns null when the given attribute does not exist on this enum value.
+		/// </summary>
+		public static string GetAttributeValues<TAttribute>(this Enum enumValue, Func<TAttribute, object> valueSelector) where TAttribute : Attribute
+		{
+			var attr = enumValue.GetAttributes<TAttribute>().ToArray();
+			if (!attr.Any())
+				return null;
+
+			return string.Join(", ", attr.Select(valueSelector.Invoke));
+		}
+
+		/// <summary>
 		/// Gets the value of the [Description] attribute attached to this enum value.
-		/// If this is a [Flags] enum, multiple descriptions will be comma separated.
 		/// </summary>
 		public static string GetDescription(this Enum enumValue)
 		{
-			return string.Join(", ", enumValue.GetAttributes<DescriptionAttribute>().Select(d => d.Description));
+			return enumValue.GetAttributeValues<DescriptionAttribute>(a => a.Description);
 		}
 
 		/// <summary>
