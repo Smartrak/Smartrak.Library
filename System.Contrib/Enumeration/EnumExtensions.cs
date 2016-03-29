@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace System.Contrib.Enumeration
 {
@@ -11,7 +12,12 @@ namespace System.Contrib.Enumeration
 		/// </summary>
 		public static IEnumerable<Enum> GetFlags(this Enum enumValue)
 		{
-			return EnumUtil.GetValues(enumValue.GetType()).Where(enumValue.HasFlag);
+			var type = enumValue.GetType();
+
+			if (type.GetCustomAttribute<FlagsAttribute>() == null)
+				return Enumerable.Repeat(enumValue, 1);
+
+			return EnumUtil.GetValues(type).Where(enumValue.HasFlag);
 		}
 
 		/// <summary>

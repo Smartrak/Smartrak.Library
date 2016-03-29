@@ -44,14 +44,14 @@ namespace System.Contrib.Tests
 		public void GetFlagsReturnsNonFlagEnumTest()
 		{
 			// Arrange
-			const TestEnum enumValue = TestEnum.A;
+			const TestEnum enumValue = TestEnum.A1;
 
 			// Act
 			var flags = enumValue.GetFlags().ToArray();
 
 			// Assert
-			Assert.AreEqual(1, flags.Length);
-			Assert.AreEqual(TestEnum.A, flags[0]);
+			Assert.AreEqual(1, flags.Length); // Check TestEnum.A2 isnt returned, since its not a [Flags] enum
+			Assert.AreEqual(TestEnum.A1, flags[0]);
 		}
 
 		#endregion
@@ -148,7 +148,9 @@ namespace System.Contrib.Tests
 
 		private enum TestEnum
 		{
-			A = 1
+			A1 = 1,
+			A2 = 1,
+			B = 2
 		}
 
 		[Flags]
