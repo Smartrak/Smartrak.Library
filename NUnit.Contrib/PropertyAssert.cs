@@ -52,7 +52,7 @@ namespace NUnit.Contrib
 				if (expectedArray.Length != actualArray.Length)
 				{
 					var propertyDescriptor = GetPropertyDescriptor(propertyPath, propertyIndex);
-					Assert.Fail($"{propertyDescriptor}\r\n  Expected length: {expectedArray.Length}\r\n  But was length:  {actualArray.Length}{Environment.NewLine}");
+					Assert.Fail($"{propertyDescriptor}{Environment.NewLine}  Expected length: {expectedArray.Length}{Environment.NewLine}  But was length:  {actualArray.Length}{Environment.NewLine}");
 				}
 
 				for (int i = 0; i < expectedArray.Length; i++)

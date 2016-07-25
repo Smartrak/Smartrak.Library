@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace NUnit.Contrib.Tests
 {
@@ -39,10 +40,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual));
 
-			var expectedExceptionMessage = @"  Values are not equal.
-  Expected: 1
-  But was:  2
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values are not equal.",
+				"  Expected: 1",
+				"  But was:  2",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -51,16 +53,17 @@ namespace NUnit.Contrib.Tests
 		public void IntArrayNotEqualTest()
 		{
 			// Arrange
-			var expected = new[] {1, 2};
-			var actual = new[] {1, 3};
+			var expected = new[] { 1, 2 };
+			var actual = new[] { 1, 3 };
 
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"  Values differ at index [1].
-  Expected: 2
-  But was:  3
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at index [1].",
+				"  Expected: 2",
+				"  But was:  3",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -75,10 +78,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"Values are not equal.
-  Expected length: 3
-  But was length:  2
-";
+			var expectedExceptionMessage = AggregateLines(
+				"Values are not equal.",
+				"  Expected length: 3",
+				"  But was length:  2",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -87,16 +91,17 @@ namespace NUnit.Contrib.Tests
 		public void IntPropNotEqualTest()
 		{
 			// Arrange
-			var expected = new TestClass {IntProp = 1};
-			var actual = new TestClass { IntProp = 2};
+			var expected = new TestClass { IntProp = 1 };
+			var actual = new TestClass { IntProp = 2 };
 
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual));
 
-			var expectedExceptionMessage = @"  Values differ at property 'IntProp'.
-  Expected: 1
-  But was:  2
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'IntProp'.",
+				"  Expected: 1",
+				"  But was:  2",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -111,10 +116,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual));
 
-			var expectedExceptionMessage = @"  Values differ at property 'StringProp'.
-  Expected: ""123""
-  But was:  null
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'StringProp'.",
+				"  Expected: \"123\"",
+				"  But was:  null",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -129,10 +135,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"  Values differ at property 'IntArrayProp' at index [2].
-  Expected: 3
-  But was:  4
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'IntArrayProp' at index [2].",
+				"  Expected: 3",
+				"  But was:  4",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -147,10 +154,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"Values differ at property 'IntArrayProp'.
-  Expected length: 4
-  But was length:  3
-";
+			var expectedExceptionMessage = AggregateLines(
+				"Values differ at property 'IntArrayProp'.",
+				"  Expected length: 4",
+				"  But was length:  3",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -166,10 +174,11 @@ namespace NUnit.Contrib.Tests
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual));
 
 			// With nested=false, we think the objects differ, but we dont know how
-			var expectedExceptionMessage = @"  Values differ at property 'NestedTestClassProp'.
-  Expected: <NUnit.Contrib.Tests.PropertyAssertTests+TestClass>
-  But was:  <NUnit.Contrib.Tests.PropertyAssertTests+TestClass>
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'NestedTestClassProp'.",
+				"  Expected: <NUnit.Contrib.Tests.PropertyAssertTests+TestClass>",
+				"  But was:  <NUnit.Contrib.Tests.PropertyAssertTests+TestClass>",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -195,10 +204,11 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"  Values differ at property 'NestedTestClassProp.IntProp'.
-  Expected: 1
-  But was:  2
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'NestedTestClassProp.IntProp'.",
+				"  Expected: 1",
+				"  But was:  2",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -224,12 +234,13 @@ namespace NUnit.Contrib.Tests
 			// Act, Assert
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
-			var expectedExceptionMessage = @"  Values differ at property 'TestClassArrayProp[1].StringProp'.
-  String lengths are both 1. Strings differ at index 0.
-  Expected: ""A""
-  But was:  ""B""
-  -----------^
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'TestClassArrayProp[1].StringProp'.",
+				"  String lengths are both 1. Strings differ at index 0.",
+				"  Expected: \"A\"",
+				"  But was:  \"B\"",
+				"  -----------^",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
@@ -250,12 +261,18 @@ namespace NUnit.Contrib.Tests
 			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, true));
 
 			// If the referential check was not present, the asserter would have navigated down to its maximum depth before eventually comparing the IntProp
-			var expectedExceptionMessage = @"  Values differ at property 'IntProp'.
-  Expected: 1
-  But was:  2
-";
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'IntProp'.",
+				"  Expected: 1",
+				"  But was:  2",
+				"");
 
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
+		}
+
+		private static string AggregateLines(params string[] lines)
+		{
+			return string.Join(Environment.NewLine, lines);
 		}
 
 		private class TestClass
