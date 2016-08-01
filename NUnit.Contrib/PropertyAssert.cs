@@ -2,23 +2,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NUnit.Framework;
 
 namespace NUnit.Contrib
 {
 	public static class PropertyAssert
 	{
+		public const int DeepCompareMaximumDepth = 16;
+
 		/// <summary>
 		/// Assert that the given objects are equal, by checking each public property.
-		/// Optionally does a deep nested compare.
 		/// </summary>
-		public static void AreEqual<T>(T expected, T actual, bool deepCompare = false)
+		/// <param name="expected">The expected value</param>
+		/// <param name="actual">The actual value</param>
+		/// <param name="deepCompare">Optionally perform a deep compare up to <see cref="DeepCompareMaximumDepth"/> levels deep. Default false.</param>
+		/// <param name="propertyFilter">Optional filter to whitelist which properties to compare. If a given type contains no filter, defaults to all public properties of the type.</param>
+		public static void AreEqual<T>(T expected, T actual, bool deepCompare = false, PropertyFilter propertyFilter = null)
 		{
-			AssertPropertiesEqual(typeof(T), expected, actual, null, null, 0, deepCompare ? 16 : 1);
+			if (propertyFilter == null)
+				propertyFilter = new PropertyFilter();
+
+			AssertPropertiesEqual(typeof(T), expected, actual, null, null, 0, deepCompare ? DeepCompareMaximumDepth : 1, propertyFilter);
 		}
 
-		private static void AssertPropertiesEqual(Type type, object expected, object actual, string propertyPath, int? propertyIndex, int depth, int maxDepth)
+		private static void AssertPropertiesEqual(Type type, object expected, object actual, string propertyPath, int? propertyIndex, int depth, int maxDepth, PropertyFilter propertyFilter)
 		{
 			if (depth >= maxDepth || IsValueType(type) || Equals(expected, null) || Equals(actual, null))
 			{
@@ -61,21 +68,13 @@ namespace NUnit.Contrib
 					var actualArrValue = actualArray[i];
 					var newPropertyPath = GetNewPropertyPath(propertyPath, propertyIndex, null);
 
-					AssertPropertiesEqual(enumerableType, expectedArrValue, actualArrValue, newPropertyPath, i, depth, maxDepth);
+					AssertPropertiesEqual(enumerableType, expectedArrValue, actualArrValue, newPropertyPath, i, depth, maxDepth, propertyFilter);
 				}
 
 				return;
 			}
 
-			var properties = type
-				.GetProperties(BindingFlags.Public | BindingFlags.Instance) // Get all public properties,
-				.Where(p => 
-					p.CanRead && // With a Getter,
-					p.GetMethod.IsPublic && // Where the getter is public,
-					!p.GetIndexParameters().Any() // And the property is not an indexer[]
-				);
-
-			foreach (var property in properties)
+			foreach (var property in propertyFilter.GetFilteredOrAllProperties(type))
 			{
 				var expectedValue = property.GetValue(expected, null);
 				var actualValue = property.GetValue(actual, null);
@@ -85,7 +84,7 @@ namespace NUnit.Contrib
 				if (property.PropertyType == type && ReferenceEquals(expected, expectedValue) && ReferenceEquals(actual, actualValue))
 					continue;
 
-				AssertPropertiesEqual(property.PropertyType, expectedValue, actualValue, newPropertyPath, null, depth, maxDepth);
+				AssertPropertiesEqual(property.PropertyType, expectedValue, actualValue, newPropertyPath, null, depth, maxDepth, propertyFilter);
 			}
 		}
 

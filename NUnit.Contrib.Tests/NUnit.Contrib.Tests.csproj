@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyAssertTests.cs" />
+    <Compile Include="PropertyFilterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NUnit.Contrib\NUnit.Contrib.csproj">

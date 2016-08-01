@@ -270,6 +270,66 @@ namespace NUnit.Contrib.Tests
 			Assert.AreEqual(expectedExceptionMessage, exception.Message);
 		}
 
+		[Test]
+		public void AssertFailsWithPropertyFilterTest()
+		{
+			// Arrange
+			var filter = new PropertyFilter().AddFilter<TestClass>(t => new
+			{
+				t.StringProp
+			});
+
+			var expected = new TestClass
+			{
+				IntProp = 1,
+				StringProp = "A",
+			};
+
+			var actual = new TestClass
+			{
+				IntProp = 2,
+				StringProp = "B"
+			};
+
+			// Act, Assert
+			var exception = Assert.Throws<AssertionException>(() => PropertyAssert.AreEqual(expected, actual, propertyFilter: filter));
+
+			var expectedExceptionMessage = AggregateLines(
+				"  Values differ at property 'StringProp'.",
+				"  String lengths are both 1. Strings differ at index 0.",
+				"  Expected: \"A\"",
+				"  But was:  \"B\"",
+				"  -----------^",
+				"");
+
+			Assert.AreEqual(expectedExceptionMessage, exception.Message);
+		}
+
+		[Test]
+		public void AssertPassesWithPropertyFilterTest()
+		{
+			// Arrange
+			var filter = new PropertyFilter().AddFilter<TestClass>(t => new
+			{
+				t.StringProp
+			});
+
+			var expected = new TestClass
+			{
+				IntProp = 1,
+				StringProp = "A",
+			};
+
+			var actual = new TestClass
+			{
+				IntProp = 2, // Value is different, but the property is not in the filter
+				StringProp = "A"
+			};
+
+			// Act, Assert
+			Assert.DoesNotThrow(() => PropertyAssert.AreEqual(expected, actual, propertyFilter: filter));
+		}
+
 		private static string AggregateLines(params string[] lines)
 		{
 			return string.Join(Environment.NewLine, lines);
