@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparable\ComparableExtensions.cs" />
     <Compile Include="DateTime\DateTimeExtensions.cs" />
     <Compile Include="Dictionary\IDictionaryExtensions.cs" />
     <Compile Include="Dictionary\InsertOrderedDictionary.cs" />
