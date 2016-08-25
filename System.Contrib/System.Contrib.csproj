@@ -56,6 +56,7 @@
     <Compile Include="Parsing\ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringManipulation\Html.cs" />
+    <Compile Include="StringManipulation\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme.md" />
