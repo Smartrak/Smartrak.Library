@@ -56,6 +56,7 @@
     <Compile Include="StreamTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="StringManipulationTests.cs" />
+    <Compile Include="TimeSpanExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Contrib\System.Contrib.csproj">
