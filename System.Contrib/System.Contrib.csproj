@@ -53,6 +53,7 @@
     <Compile Include="Linq\IEnumerableExtensions.cs" />
     <Compile Include="Linq\Paging\EntityWithCount.cs" />
     <Compile Include="Linq\Paging\PagingHelpers.cs" />
+    <Compile Include="Net\Http\CloneRequest.cs" />
     <Compile Include="Parsing\ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringManipulation\Html.cs" />
