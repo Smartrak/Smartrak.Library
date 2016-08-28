@@ -1,4 +1,4 @@
-﻿namespace Smartrak.Collections.Paging
+﻿namespace System.Linq.Contrib.Paging
 {
 	/// <summary>
 	/// This is a wrapper for a SQL query which includes a count on each row. Using this style of query avoids the need for a second query.
