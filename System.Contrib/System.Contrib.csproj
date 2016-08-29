@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,7 @@
     <Compile Include="Linq\IEnumerableExtensions.cs" />
     <Compile Include="Linq\Paging\EntityWithCount.cs" />
     <Compile Include="Linq\Paging\PagingHelpers.cs" />
+    <Compile Include="Net\Http\ClientIp.cs" />
     <Compile Include="Net\Http\CloneRequest.cs" />
     <Compile Include="Parsing\ParseHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
