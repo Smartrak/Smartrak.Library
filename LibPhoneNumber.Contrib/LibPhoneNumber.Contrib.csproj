@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="PhoneNumberUtil\PhoneNumberUtilExtensions.cs" />
     <Compile Include="PhoneNumberUtil\PhoneNumberValidator.cs" />
+    <Compile Include="PhoneNumber\PhoneNumberExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 {
 	public static class PhoneUtilExtensions
 	{
-		public static bool TryGetValidMobileNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes, out PhoneNumber phoneNumber)
+		public static bool TryGetValidMobileNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes, out PhoneNumbers.PhoneNumber phoneNumber)
 		{
 			phoneNumber = null;
 
@@ -17,7 +17,7 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 		}
 
 		/// <returns>Null for invalid input</returns>
-		public static PhoneNumber GetValidMobileNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes)
+		public static PhoneNumbers.PhoneNumber GetValidMobileNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes)
 		{
 			var number = phoneUtil.GetValidNumber(numberString, regionCodes);
 
@@ -29,7 +29,7 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 				: null;
 		}
 
-		public static bool TryGetValidNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes, out PhoneNumber phoneNumber)
+		public static bool TryGetValidNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes, out PhoneNumbers.PhoneNumber phoneNumber)
 		{
 			phoneNumber = null;
 
@@ -48,7 +48,7 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 		}
 
 		/// <returns>Null for invalid input</returns>
-		public static PhoneNumber GetValidNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes)
+		public static PhoneNumbers.PhoneNumber GetValidNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] regionCodes)
 		{
 			foreach (var regionCode in regionCodes)
 			{
@@ -64,7 +64,7 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 			return null;
 		}
 
-		private static PhoneNumber ParseFromString(PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string regionCode)
+		private static PhoneNumbers.PhoneNumber ParseFromString(PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string regionCode)
 		{
 			try
 			{
