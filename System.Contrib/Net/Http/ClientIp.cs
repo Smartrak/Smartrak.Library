@@ -15,6 +15,10 @@ namespace System.Net.Http.Contrib
 			{
 				return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
 			}
+			if (request.Properties.ContainsKey("MS_OwinContext"))
+			{
+				return ((dynamic)request.Properties["MS_OwinContext"]).Request.RemoteIpAddress;
+			}
 			return null;
 		}
 	}
