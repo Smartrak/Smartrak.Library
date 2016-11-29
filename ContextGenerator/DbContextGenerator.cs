@@ -10,6 +10,11 @@ namespace ContextGenerator
 	{
 		public static T Generate<T>() where T : class
 		{
+			return GenerateMock<T>().Object;
+		}
+
+		public static Mock<T> GenerateMock<T>() where T : class
+		{
 			var mockContext = new Mock<T>();
 			var parameter = Expression.Parameter(typeof(T));
 
@@ -27,7 +32,7 @@ namespace ContextGenerator
 				mockContext.SetupGet(lambdaExpression).Returns(Activator.CreateInstance(typeof(MemoryDbSet<>).MakeGenericType(iDbSetProperty.PropertyType.GenericTypeArguments)));
 			}
 
-			return mockContext.Object;
+			return mockContext;
 		}
 	}
 }
