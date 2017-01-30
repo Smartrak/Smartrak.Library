@@ -12,6 +12,8 @@ namespace MultiAsyncThreading
 		private readonly Dictionary<WaitHandle, Action<IAsyncResult>> _handleCallbacks = new Dictionary<WaitHandle, Action<IAsyncResult>>();
 		private readonly List<WaitHandle> _waitHandles = new List<WaitHandle>();
 		private bool _startedProcessing;
+		private TimeSpan? _timeout;
+		private Action _timeoutCallback;
 
 		public AsyncCallbackDispatcher(Thread thread)
 		{
@@ -33,6 +35,18 @@ namespace MultiAsyncThreading
 			_stopEvent = null;
 		}
 
+		public void ClearTimer()
+		{
+			_timeout = null;
+			_timeoutCallback = null;
+		}
+
+		public void SetTimer(TimeSpan timeout, Action callback)
+		{
+			_timeout = timeout;
+			_timeoutCallback = callback;
+		}
+
 		public void Add(IAsyncResult asyncResult, Action<IAsyncResult> callback)
 		{
 			if (_startedProcessing && Thread.CurrentThread != _thread)
@@ -49,9 +63,14 @@ namespace MultiAsyncThreading
 			_startedProcessing = true;
 			while (true)
 			{
-				int waitResult = WaitHandle.WaitAny(_waitHandles.ToArray());
+				int waitResult = WaitHandle.WaitAny(_waitHandles.ToArray(), _timeout ?? TimeSpan.FromMilliseconds(-1));
 				if (waitResult == 0)
 					break;
+				if (waitResult == WaitHandle.WaitTimeout)
+				{
+					_timeoutCallback();
+					continue;
+				}
 				var waitHandle = _waitHandles[waitResult];
 				var action = _handleCallbacks[waitHandle];
 				var asyncResult = _asyncResults[waitHandle];

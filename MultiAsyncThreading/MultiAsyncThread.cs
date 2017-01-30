@@ -31,6 +31,16 @@ namespace MultiAsyncThreading
 			_asyncCallbackDispatcher.Process();
 		}
 
+		public void ClearTimer()
+		{
+			_asyncCallbackDispatcher.ClearTimer();
+		}
+
+		public void SetTimer(TimeSpan timeout, Action callback)
+		{
+			_asyncCallbackDispatcher.SetTimer(timeout, callback);
+		}
+
 		public void Add(IAsyncResult asyncResult, Action<IAsyncResult> callback)
 		{
 			_asyncCallbackDispatcher.Add(asyncResult, callback);
