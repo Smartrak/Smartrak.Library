@@ -13,8 +13,9 @@
 		/// <typeparam name="TResult">The result type of the subject task</typeparam>
 		/// <param name="task">the subject task</param>
 		/// <param name="timeout">The maximum time you want to wait before giving up on the task</param>
+		/// <param name="timeoutMessage">The exception message to throw on timeout</param>
 		/// <returns>The result of the subject task</returns>
-		public static async Task<TResult> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
+		public static async Task<TResult> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout, string timeoutMessage = "The operation has timed out.")
 		{
 			var timeoutCancellationTokenSource = new CancellationTokenSource();
 
@@ -26,7 +27,7 @@
 			}
 			else
 			{
-				throw new TimeoutException("The operation has timed out.");
+				throw new TimeoutException(timeoutMessage);
 			}
 		}
 	}
