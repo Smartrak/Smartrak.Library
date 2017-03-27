@@ -61,6 +61,7 @@
     <Compile Include="IEnumerableExtensionsTests.cs" />
     <Compile Include="InsertOrderedDictionaryTests.cs" />
     <Compile Include="PagingTests.cs" />
+    <Compile Include="ParseEnumTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamTests.cs" />
     <Compile Include="StringExtensionsTests.cs" />

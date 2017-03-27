@@ -51,6 +51,7 @@
     <Compile Include="Enumeration\EnumExtensions.cs" />
     <Compile Include="Enumeration\EnumUtil.cs" />
     <Compile Include="Enumeration\EnumValue.cs" />
+    <Compile Include="Enumeration\ParseEnum.cs" />
     <Compile Include="Enumeration\ThrowHelper.cs" />
     <Compile Include="IO\StreamHelpers.cs" />
     <Compile Include="Linq\IEnumerableExtensions.cs" />
