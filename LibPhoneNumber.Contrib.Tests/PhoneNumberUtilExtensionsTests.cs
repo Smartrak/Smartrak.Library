@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace LibPhoneNumber.Contrib.Tests
 {
+	[TestFixture]
 	public class PhoneNumberUtilExtensionTests
 	{
 		[Test]
