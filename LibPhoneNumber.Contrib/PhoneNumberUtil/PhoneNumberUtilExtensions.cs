@@ -75,5 +75,30 @@ namespace LibPhoneNumber.Contrib.PhoneNumberUtil
 				return null;
 			}
 		}
+
+		/// <summary>
+		/// Try gets the phonenumber formatted in E164 if it was valid for the first country as specified in order of countries passed in
+		/// </summary>
+		/// <param name="phoneUtil">PhoneNumberUtil instance</param>
+		/// <param name="numberString">The phonenumber to get </param>
+		/// <param name="countryCodes">The countries to check for a valid phonenumber</param>
+		/// <param name="formattedPhoneNumber">The phonenumber formatted in E164</param>
+		/// <returns>True if successfully retrieves the formatted phonenumber</returns>
+		public static bool TryGetFormattedPhoneNumber(this PhoneNumbers.PhoneNumberUtil phoneUtil, string numberString, string[] countryCodes, out string formattedPhoneNumber)
+		{
+			formattedPhoneNumber = null;
+
+			foreach (var countryCode in countryCodes)
+			{
+				var phoneNumber = phoneUtil.Parse(numberString, countryCode);
+				if (phoneUtil.IsValidNumber(phoneNumber))
+				{
+					formattedPhoneNumber = phoneUtil.Format(phoneNumber, PhoneNumberFormat.E164);
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }
