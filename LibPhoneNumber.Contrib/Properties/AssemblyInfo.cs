@@ -28,6 +28,6 @@ using System.Runtime.InteropServices;
 
 internal static class AssemblyMeta
 {
-	public const string Version = "1.1.2";
+	public const string Version = "1.2.0";
 }
 
