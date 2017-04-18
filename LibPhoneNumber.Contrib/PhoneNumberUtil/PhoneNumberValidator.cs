@@ -50,5 +50,18 @@
 		{
 			return PhoneNumbers.PhoneNumberUtil.GetInstance().GetValidMobileNumber(numberString, regionCodes);
 		}
+
+		/// <summary>
+		/// Gets the phonenumber formatted to E164
+		/// </summary>
+		/// <param name="numberString">Phonenumber to validate and format</param>
+		/// <param name="countryCodes">The country codes used in global networks</param>
+		/// <returns></returns>
+		public static string GetFormattedPhoneNumber(string numberString, string[] countryCodes)
+		{
+			string formattedPhoneNumber;
+			PhoneNumbers.PhoneNumberUtil.GetInstance().TryGetFormattedPhoneNumber(numberString, countryCodes, out formattedPhoneNumber);
+			return formattedPhoneNumber;
+		}
 	}
 }
