@@ -10,10 +10,20 @@ namespace ContextGenerator
 	{
 		public static T Generate<T>() where T : class
 		{
-			return GenerateMock<T>().Object;
+			return GenerateMock<T>(false).Object;
+		}
+
+		public static T Generate<T>(bool async) where T : class
+		{
+			return GenerateMock<T>(async).Object;
 		}
 
 		public static Mock<T> GenerateMock<T>() where T : class
+		{
+			return GenerateMock<T>(false);
+		}
+
+		public static Mock<T> GenerateMock<T>(bool async) where T : class
 		{
 			var mockContext = new Mock<T>();
 			var parameter = Expression.Parameter(typeof(T));
@@ -29,7 +39,7 @@ namespace ContextGenerator
 			{
 				var body = Expression.PropertyOrField(parameter, iDbSetProperty.Name);
 				var lambdaExpression = Expression.Lambda<Func<T, object>>(body, parameter);
-				mockContext.SetupGet(lambdaExpression).Returns(Activator.CreateInstance(typeof(MemoryDbSet<>).MakeGenericType(iDbSetProperty.PropertyType.GenericTypeArguments)));
+				mockContext.SetupGet(lambdaExpression).Returns(Activator.CreateInstance(typeof(MemoryDbSet<>).MakeGenericType(iDbSetProperty.PropertyType.GenericTypeArguments), new object[] { true }));
 			}
 
 			return mockContext;

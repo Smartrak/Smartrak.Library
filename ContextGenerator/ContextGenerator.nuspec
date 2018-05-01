@@ -4,8 +4,12 @@
 		<id>$id$</id>
 		<version>$version$</version>
 		<authors>Smartrak</authors>
-		<description>Automatically setting up a DbContext interface using an in-memory implementation of IDbSet and Moq</description>
+		<description>Automatically setting up an EF6 DbContext interface using an in-memory implementation of IDbSet and Moq</description>
 		<projectUrl>https://github.com/Smartrak/Smartrak.Library/$id$</projectUrl>
 		<licenseUrl>https://raw.githubusercontent.com/Smartrak/Smartrak.Library/master/LICENSE</licenseUrl>
+		<dependencies>
+			<dependency id="EntityFramework" version="6.1.3"/>
+			<dependency id="Moq" version="4.5.19"/>
+		</dependencies>
 	</metadata>
 </package>
