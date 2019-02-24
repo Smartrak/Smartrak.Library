@@ -91,5 +91,29 @@ namespace System.Contrib.Tests
 			// Assert
 			Assert.AreEqual(expectedOutput, actualOutput);
 		}
+
+		[Test]
+		[TestCase(null, "")]
+		[TestCase("", "")]
+		[TestCase(" ", "")]
+		[TestCase("	", "")]
+		[TestCase(" a ", "a ")]
+		[TestCase("  a  ", "a  ")]
+		[TestCase("	a	", "a	")]
+		[TestCase("		a		", "a		")]
+		[TestCase(@"class Program {
+	public static int Main(string[] args)
+	{
+		return 1;
+	}
+}", "class Program {public static int Main(string[] args){return 1;}}")]
+		public void TrimFormattingTest(string input, string expectedOutput)
+		{
+			// Act
+			var actualOutput = input.TrimFormatting();
+
+			// Assert
+			Assert.AreEqual(expectedOutput, actualOutput);
+		}
 	}
 }

@@ -3,8 +3,14 @@ using System.Text;
 
 namespace System.Contrib.StringManipulation
 {
+	/// <summary>
+	/// Extensions for <see cref="string"/>.
+	/// </summary>
 	public static class StringExtensions
 	{
+		private static readonly char[] NewLineChars = { '\r', '\n' };
+		private static readonly char[] IndentationChars = { '\t', ' ' };
+
 		/// <summary>
 		/// Expands a camelCase or PascalCase string by inserting spaces between each word.
 		/// </summary>
@@ -86,6 +92,22 @@ namespace System.Contrib.StringManipulation
 					haveSpace = false;
 				}
 			}
+
+			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Removes leading indentation (tabs, spaces) and newlines (\r, \n) from this string
+		/// </summary>
+		public static string TrimFormatting(this string str)
+		{
+			if (str == null)
+				return string.Empty;
+
+			var builder = new StringBuilder();
+
+			foreach (var line in str.Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries))
+				builder.Append(line.TrimStart(IndentationChars));
 
 			return builder.ToString();
 		}

@@ -10,6 +10,10 @@ Extensions on top of root dotnet classes.
 
 ### Major version 1
 
+#### 1.19.0
+
+* Add `TrimFormatting()` extension method for `string`.
+
 #### 1.0.0 - 1.18.0
 
 * Undocumented.
