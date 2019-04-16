@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>Smartrak.PerformantSocketServer</id>
+		<id>$id$</id>
 		<version>$version$</version>
 		<authors>Smartrak</authors>
 		<description>Automatically setting up an EF6 DbContext interface using an in-memory implementation of IDbSet and Moq</description>
-		<projectUrl>https://github.com/Smartrak/Smartrak.Library/Smartrak.PerformantSocketServer</projectUrl>
+		<projectUrl>https://github.com/Smartrak/Smartrak.Library/$id$</projectUrl>
 		<licenseUrl>https://raw.githubusercontent.com/Smartrak/Smartrak.Library/master/LICENSE</licenseUrl>
 		<dependencies>
 			<dependency id="EntityFramework" version="6.1.3"/>
