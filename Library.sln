@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NugetPackageTrimmer", "NugetPackageTrimmer\NugetPackageTrimmer.csproj", "{FB510DEA-B7D5-48EA-9B0B-754CA957C6B3}"
 EndProject
@@ -32,6 +32,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiAsyncThreading", "MultiAsyncThreading\MultiAsyncThreading.csproj", "{BB17321E-9B84-4CF6-BEA6-1C043BD794D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPhoneNumber.Contrib.Tests", "LibPhoneNumber.Contrib.Tests\LibPhoneNumber.Contrib.Tests.csproj", "{463A47AB-2EC4-48B9-82C0-E38435F5144F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerformantSocketServer", "PerformantSocketServer", "{5E7234A3-3B66-4C42-99E6-D6C9C2541B37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformantSocketServer", "PerformantSocketServer\PerformantSocketServer.csproj", "{D6A800BF-7975-43F8-B8CA-50FE7943CEA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformantSocketServer.Tests", "PerformantSocketServer.Tests\PerformantSocketServer.Tests.csproj", "{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,8 +105,23 @@ Global
 		{463A47AB-2EC4-48B9-82C0-E38435F5144F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463A47AB-2EC4-48B9-82C0-E38435F5144F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463A47AB-2EC4-48B9-82C0-E38435F5144F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6A800BF-7975-43F8-B8CA-50FE7943CEA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6A800BF-7975-43F8-B8CA-50FE7943CEA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6A800BF-7975-43F8-B8CA-50FE7943CEA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6A800BF-7975-43F8-B8CA-50FE7943CEA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6A800BF-7975-43F8-B8CA-50FE7943CEA2} = {5E7234A3-3B66-4C42-99E6-D6C9C2541B37}
+		{6CC9CF99-D4F6-4F07-9B38-5D8EF93866DE} = {5E7234A3-3B66-4C42-99E6-D6C9C2541B37}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DC6D4CF-CABF-4628-9ED0-50070940364B}
 	EndGlobalSection
 EndGlobal
