@@ -101,7 +101,7 @@ namespace PerformantSocketServer
 				}
 
 				// --- Logging / Debugging
-				_trace.WatchDogRunning(ServerDiagnostics.Instance.Now, ServerDiagnostics.Instance.Now - startTime);
+				_trace.WatchDogRunning(_settings, ServerDiagnostics.Instance.Now, ServerDiagnostics.Instance.Now - startTime);
 				// ---
 			}
 		}

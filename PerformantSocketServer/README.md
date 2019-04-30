@@ -12,6 +12,10 @@ This is a socket server built on top of SocketAsyncEvents.
 
 ## Change Notes
 
+### 2.0.0-beta2
+
+* (Breaking) Now include the server configuration in the watchdog (for when you need reference values or the custom object).
+
 ### 2.0.0-beta1
 
 * (Breaking) Can now indicate the behaviour of the socket after processing is complete.  Before, no data to send back meant closing the socket.  You can now send back no data and continue to listen.

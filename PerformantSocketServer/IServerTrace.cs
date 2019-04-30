@@ -28,7 +28,7 @@ namespace PerformantSocketServer
 		void CompletedTask(IdentityUserToken poolId);
 		void FailedTask(IdentityUserToken poolId, Exception e);
 
-		void WatchDogRunning(long time, double duration);
+		void WatchDogRunning(SocketListenerSettings settings, long time, double duration);
 
 		void Exception(Exception err);
 
