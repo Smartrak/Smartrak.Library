@@ -16,10 +16,11 @@ namespace PerformantSocketServer
 		void Received(IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length);
 		void ReceivedGreaterThanBuffer(IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length);
 
-		void Sending(IdentityUserToken poolId, IPEndPoint remote, int bytesTransferred);
+		void Sending(IdentityUserToken poolId, IPEndPoint remote, int bytesToTransfer);
+		void Sent(IdentityUserToken poolId, IPEndPoint remote, int bytesSent);
 
-		void ClosingConnection(IdentityUserToken poolId, IPEndPoint remote);
-		void TimingOutConnection(IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length, double awaitTime, double obtainLock ,double connectionsCollected,double closeTime);
+		void ClosingConnection(IdentityUserToken poolId, IPEndPoint remote, bool toldToCloseByHander, bool closedByClient, SocketError closeReason);
+		void TimingOutConnection(IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length, double awaitTime, double obtainLock, double connectionsCollected, double closeTime);
 
 		void QueuedTask(IdentityUserToken poolId);
 		void StartingTask(IdentityUserToken poolId, DateTime requestedTime);

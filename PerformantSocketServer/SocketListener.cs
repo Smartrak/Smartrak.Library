@@ -10,7 +10,7 @@ namespace PerformantSocketServer
 	using System.Net.Sockets;
 	using System.Threading;
 
-	public class SocketListener : IDisposable
+	public class SocketListener<T> : IDisposable where T : ISocketStateData
 	{
 		/// <summary>
 		/// Server settings
@@ -22,7 +22,7 @@ namespace PerformantSocketServer
 		/// And a method to handle the message / create a response
 		/// (Bussiness logic about the message goes in here)
 		/// </summary>
-		private readonly IMessageHandler _messageHandler;
+		private readonly IMessageHandler<T> _messageHandler;
 
 		/// <summary>
 		/// Allows for callbacks to be called at different stages throughout server run.
@@ -61,7 +61,7 @@ namespace PerformantSocketServer
 		/// Monitors active connections and timesout connections that have not talked
 		/// within the last N milliseconds. Will kill active connections when disposed.
 		/// </summary>
-		private readonly WatchDog _watchDog;
+		private readonly WatchDog<T> _watchDog;
 
 		/// <summary>
 		/// This Semaphore is used to keep from going over the maximum connection number.
@@ -75,7 +75,7 @@ namespace PerformantSocketServer
 		/// </summary>
 		private readonly TaskFactory _taskManager;
 
-		public SocketListener(SocketListenerSettings settings, IMessageHandler messageHandler, IServerTrace trace = null)
+		public SocketListener(SocketListenerSettings settings, IMessageHandler<T> messageHandler, IServerTrace trace = null)
 		{
 			_settings = settings;
 			_messageHandler = messageHandler;
@@ -91,7 +91,7 @@ namespace PerformantSocketServer
 			_acceptPool = new SocketAsyncEventArgsPool(settings.MaxSimultaneousAcceptOperations);
 
 			// Create watchdog
-			_watchDog = new WatchDog(_settings, _trace);
+			_watchDog = new WatchDog<T>(_settings, _trace);
 
 			// Create connection count enforcer
 			_maxConnectionsEnforcer = new Semaphore(settings.MaxConnections, settings.MaxConnections);
@@ -201,7 +201,7 @@ namespace PerformantSocketServer
 
 				return;
 			}
-			
+
 			_trace.HandleAccept(token, acceptEventArgs.GetRemoteIpEndPoint());
 
 			// Begin listening for more connections
@@ -219,8 +219,9 @@ namespace PerformantSocketServer
 			workerEventArgs.AcceptSocket = acceptEventArgs.AcceptSocket;
 
 			// Ensure that the buffer we're about to use has been cleared.
-			((DataHoldingUserToken)workerEventArgs.UserToken).LastTalked = ((IdentityUserToken)acceptEventArgs.UserToken).LastTalked;
-			((DataHoldingUserToken)workerEventArgs.UserToken).Reset();
+			((DataHoldingUserToken<T>)workerEventArgs.UserToken).LastTalked = ((IdentityUserToken)acceptEventArgs.UserToken).LastTalked;
+			((DataHoldingUserToken<T>)workerEventArgs.UserToken).Reset();
+			((DataHoldingUserToken<T>)workerEventArgs.UserToken).SocketStateData.Reset();
 
 			acceptEventArgs.AcceptSocket = null;
 			_acceptPool.Push(acceptEventArgs);
@@ -249,7 +250,7 @@ namespace PerformantSocketServer
 
 			try
 			{
-				var token = (DataHoldingUserToken) workerEventArgs.UserToken;
+				var token = (DataHoldingUserToken<T>)workerEventArgs.UserToken;
 
 				workerEventArgs.SetBuffer(token.ReceiveBufferNextPos, _settings.IoBufferSize);
 
@@ -274,15 +275,15 @@ namespace PerformantSocketServer
 
 		private void ProcessReceive(SocketAsyncEventArgs workerEventArgs)
 		{
-			var token = (DataHoldingUserToken)workerEventArgs.UserToken;
+			var token = (DataHoldingUserToken<T>)workerEventArgs.UserToken;
 			token.ReceivedBytes += workerEventArgs.BytesTransferred;
 			token.LastTalked = ServerDiagnostics.Instance.Now;
 
 			// Check the socket is still good
 			bool closeSocket =
-				workerEventArgs.BytesTransferred == 0				|| // Client has closed the connection (Normal)
-				workerEventArgs.SocketError != SocketError.Success	|| // Something has gone wrong. (Bad)
-				token.ReceivedBytes > token.BufferSize				;  // Recieved more data then we can handle (Bad)
+				workerEventArgs.BytesTransferred == 0 || // Client has closed the connection (Normal)
+				workerEventArgs.SocketError != SocketError.Success || // Something has gone wrong. (Bad)
+				token.ReceivedBytes > token.BufferSize;  // Recieved more data then we can handle (Bad)
 
 			// if not close the socket
 			if (closeSocket)
@@ -290,19 +291,25 @@ namespace PerformantSocketServer
 				if (token.ReceivedBytes > token.BufferSize && workerEventArgs.SocketError == SocketError.Success)
 					_trace.ReceivedGreaterThanBuffer(token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes);
 
-				token.Reset();
+				//token.Reset();
+				token.ClosedByClient = workerEventArgs.BytesTransferred == 0;
+				token.CloseReason = workerEventArgs.SocketError;
 				CloseClientSocket(workerEventArgs);
 
 				return;
 			}
 
+			//Create a clone of the endpoint, as having a task might mean accessing the socket details after the endpoint is no longer valid.
+			var currentEndpoint = workerEventArgs.GetRemoteIpEndPoint();
+			IPEndPoint ipEndPoint = new IPEndPoint(currentEndpoint.Address, currentEndpoint.Port);
+
 			// --- Logging / Debugging
-			_trace.Received(token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes);
+			_trace.Received(token, ipEndPoint, workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes);
 			// ---
 
 			// Check if we have a full message
-			bool incomingMessageReady = 
-				_messageHandler.IsMessageComplete(workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes, workerEventArgs.BytesTransferred);
+			bool incomingMessageReady =
+				_messageHandler.IsMessageComplete(workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes, workerEventArgs.BytesTransferred, token.SocketStateData);
 
 			if (incomingMessageReady)
 			{
@@ -315,8 +322,9 @@ namespace PerformantSocketServer
 
 				var requestStartTime = DateTime.Now;
 
-				_taskManager.StartNew(() =>
+				_taskManager.StartNew(state =>
 				{
+					SocketListenerState s = (SocketListenerState) state;
 					try
 					{
 						// --- Logging / Debugging
@@ -331,27 +339,30 @@ namespace PerformantSocketServer
 							return;
 						}
 
-						var response = _messageHandler.HandleMessage(workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes);
+						var response = _messageHandler.HandleMessage(s.EndPoint, workerEventArgs.Buffer, token.ReceiveBufferOffset, token.ReceivedBytes, _settings.CustomState, token.SocketStateData);
 						token.Reset();
-						token.WriteData = response;
+						token.WriteData = response.ToSend;
+						token.CloseAfterSend = response.DisconnectOnceDone;
 
-						if (token.WriteData == null)
+						if (token.WriteData != null)
+							StartSend(workerEventArgs);
+						else if (response.DisconnectOnceDone)
 							CloseClientSocket(workerEventArgs);
 						else
-							StartSend(workerEventArgs);
+							StartReceive(workerEventArgs);
 
 						// --- Logging / Debugging
 						_trace.CompletedTask(token);
 						// ---
 
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
 						// Task failed...
 						_trace.FailedTask(token, e);
 						CloseClientSocket(workerEventArgs);
 					}
-				});
+				}, new SocketListenerState { EndPoint = ipEndPoint });
 			}
 			else
 			{
@@ -366,13 +377,17 @@ namespace PerformantSocketServer
 		/// <param name="workerEventArgs"></param>
 		private void StartSend(SocketAsyncEventArgs workerEventArgs)
 		{
-			DataHoldingUserToken token = (DataHoldingUserToken)workerEventArgs.UserToken;
+			DataHoldingUserToken<T> token = (DataHoldingUserToken<T>)workerEventArgs.UserToken;
 
 			if (token.WriteDataBytesRemaining <= _settings.IoBufferSize)
 			{
 				// Whole remaining message will fit in buffer.
 				workerEventArgs.SetBuffer(token.WriteBufferOffset, token.WriteDataBytesRemaining);
 				Buffer.BlockCopy(token.WriteData, token.WriteDataBytesSent, workerEventArgs.Buffer, token.WriteBufferOffset, token.WriteDataBytesRemaining);
+
+				// --- Logging / Debugging
+				_trace.Sending(token, workerEventArgs.GetRemoteIpEndPoint(), token.WriteDataBytesRemaining);
+				// ---
 			}
 			else
 			{
@@ -382,7 +397,12 @@ namespace PerformantSocketServer
 				Buffer.BlockCopy(token.WriteData, token.WriteDataBytesSent, workerEventArgs.Buffer, token.WriteBufferOffset, _settings.IoBufferSize);
 
 				// We update the token.WriteDataBytesSent once the Sending has been confirmed.
+
+				// --- Logging / Debugging
+				_trace.Sending(token, workerEventArgs.GetRemoteIpEndPoint(), _settings.IoBufferSize);
+				// ---
 			}
+
 
 			bool runningAsync = workerEventArgs.AcceptSocket.SendAsync(workerEventArgs);
 
@@ -394,11 +414,11 @@ namespace PerformantSocketServer
 
 		private void ProcessSend(SocketAsyncEventArgs workerEventArgs)
 		{
-			DataHoldingUserToken token = (DataHoldingUserToken)workerEventArgs.UserToken;
+			DataHoldingUserToken<T> token = (DataHoldingUserToken<T>)workerEventArgs.UserToken;
 			token.WriteDataBytesSent += workerEventArgs.BytesTransferred;
 
 			// --- Logging / Debugging
-			_trace.Sending(token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.BytesTransferred);
+			_trace.Sent(token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.BytesTransferred);
 			// ---
 
 			if (workerEventArgs.SocketError != SocketError.Success)
@@ -417,16 +437,19 @@ namespace PerformantSocketServer
 			}
 			else
 			{
-				StartReceive(workerEventArgs);
+				if (token.CloseAfterSend)
+					CloseClientSocket(workerEventArgs);
+				else
+					StartReceive(workerEventArgs);
 			}
 		}
 
 		private void CloseClientSocket(SocketAsyncEventArgs workerEventArgs)
 		{
-			var token = (DataHoldingUserToken)workerEventArgs.UserToken;
+			var token = (DataHoldingUserToken<T>)workerEventArgs.UserToken;
 
 			// --- Logging / Debugging
-			_trace.ClosingConnection(token, workerEventArgs.GetRemoteIpEndPoint());
+			_trace.ClosingConnection(token, workerEventArgs.GetRemoteIpEndPoint(), token.CloseAfterSend, token.ClosedByClient, token.CloseReason);
 			// ---
 
 			_watchDog.RemoveWatch(workerEventArgs);
@@ -475,14 +498,14 @@ namespace PerformantSocketServer
 			workerEventArgs.Completed += WorkerIoOnCompleted;
 
 			_bufferManager.SetBuffer(workerEventArgs);
-			workerEventArgs.UserToken = new DataHoldingUserToken(workerEventArgs.Offset, workerEventArgs.Offset + _settings.IoBufferSize, _settings.IoBufferSize);
+			workerEventArgs.UserToken = new DataHoldingUserToken<T>(workerEventArgs.Offset, workerEventArgs.Offset + _settings.IoBufferSize, _settings.IoBufferSize);
 
 			return workerEventArgs;
 		}
 
 		private void WorkerIoOnCompleted(object sender, SocketAsyncEventArgs socketAsyncEventArgs)
 		{
-			switch(socketAsyncEventArgs.LastOperation)
+			switch (socketAsyncEventArgs.LastOperation)
 			{
 				case SocketAsyncOperation.Receive:
 					ProcessReceive(socketAsyncEventArgs);
@@ -508,7 +531,7 @@ namespace PerformantSocketServer
 			_trace.Dispose();
 			// ---
 
-			_listenSocket.Close();
+			_listenSocket?.Close();
 			_watchDog.Dispose();
 
 			SocketAsyncEventArgs eventArgs;
@@ -533,10 +556,16 @@ namespace PerformantSocketServer
 			{
 				return eventArgs.AcceptSocket != null ? eventArgs.AcceptSocket.RemoteEndPoint as IPEndPoint : null;
 			}
-			catch(ObjectDisposedException)
+			catch (ObjectDisposedException)
 			{
 				return null;
 			}
 		}
 	}
+
+	public class SocketListenerState
+	{
+		public IPEndPoint EndPoint { get; set; }
+	}
+
 }

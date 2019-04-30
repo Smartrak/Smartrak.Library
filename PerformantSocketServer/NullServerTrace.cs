@@ -38,7 +38,11 @@ namespace PerformantSocketServer
 		{
 		}
 
-		public void ClosingConnection(IdentityUserToken connectionId, IPEndPoint remote)
+		public void Sent(IdentityUserToken poolId, IPEndPoint remote, int bytesSent)
+		{
+		}
+
+		public void ClosingConnection(IdentityUserToken connectionId, IPEndPoint remote, bool toldToCloseByHander, bool closedByClient, SocketError closeReason)
 		{
 		}
 

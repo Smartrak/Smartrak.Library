@@ -73,5 +73,10 @@
 		{
 			get { return 2; }
 		}
+
+		/// <summary>
+		/// A custom supplied object from whoever constructs this to pass down into the Socket Listener.
+		/// </summary>
+		public object CustomState { get; set; }
 	}
 }

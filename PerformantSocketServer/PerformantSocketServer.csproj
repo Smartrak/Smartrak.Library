@@ -47,6 +47,7 @@
     <Compile Include="IdentityUserToken.cs" />
     <Compile Include="IMessageHandler.cs" />
     <Compile Include="IServerTrace.cs" />
+    <Compile Include="ISocketStateData.cs" />
     <Compile Include="LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="NullServerTrace.cs" />
     <Compile Include="ServerDiagnostics.cs" />

@@ -12,7 +12,7 @@ namespace PerformantSocketServer
 	/// <summary>
 	/// Times out low running connections
 	/// </summary>
-	internal class WatchDog : IDisposable
+	internal class WatchDog<T> : IDisposable where T : ISocketStateData
 	{
 		private readonly HashSet<SocketAsyncEventArgs> _activeConnections;
 		private readonly SocketListenerSettings _settings;
@@ -84,7 +84,7 @@ namespace PerformantSocketServer
 				foreach (var v in toClose)
 				{
 					var token = (IdentityUserToken)v.UserToken;
-					var dataToken = token as DataHoldingUserToken;
+					var dataToken = token as DataHoldingUserToken<T>;
 
 					// --- Logging / Debugging
 					int bufferOffset = dataToken != null ? dataToken.ReceiveBufferOffset : 0;

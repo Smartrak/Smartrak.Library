@@ -33,10 +33,11 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion(AssemblyMeta.Version)]
-[assembly: AssemblyFileVersion(AssemblyMeta.Version)]
-[assembly: AssemblyInformationalVersion(AssemblyMeta.Version)]
+[assembly: AssemblyFileVersion(AssemblyMeta.Version + AssemblyMeta.BetaTag)]
+[assembly: AssemblyInformationalVersion(AssemblyMeta.Version + AssemblyMeta.BetaTag)]
 
 internal static class AssemblyMeta
 {
-	public const string Version = "1.0.0";
+	public const string Version = "2.0.0";
+	public const string BetaTag = "-beta1";
 }
