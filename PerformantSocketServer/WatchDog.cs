@@ -60,6 +60,7 @@ namespace PerformantSocketServer
 					return;
 
 				List<SocketAsyncEventArgs> toClose = new List<SocketAsyncEventArgs>();
+				int connectionCount = 0;
 				lock (_activeConnections)
 				{
 					lockObtainedTime = ServerDiagnostics.Instance.Now;
@@ -75,6 +76,10 @@ namespace PerformantSocketServer
 							// the socket listener will handle the unexpected closure of
 							// the connection like normal.
 							toClose.Add(connection);
+						}
+						else
+						{
+							connectionCount++;
 						}
 					}
 				}
@@ -101,7 +106,7 @@ namespace PerformantSocketServer
 				}
 
 				// --- Logging / Debugging
-				_trace.WatchDogRunning(_settings, ServerDiagnostics.Instance.Now, ServerDiagnostics.Instance.Now - startTime);
+				_trace.WatchDogRunning(_settings, ServerDiagnostics.Instance.Now, ServerDiagnostics.Instance.Now - startTime, connectionCount);
 				// ---
 			}
 		}

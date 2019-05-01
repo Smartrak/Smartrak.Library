@@ -70,7 +70,7 @@ namespace PerformantSocketServer
 		{
 		}
 
-		public void WatchDogRunning(SocketListenerSettings settings, long time, double duration)
+		public void WatchDogRunning(SocketListenerSettings settings, long time, double duration, int connectionCount)
 		{
 		}
 

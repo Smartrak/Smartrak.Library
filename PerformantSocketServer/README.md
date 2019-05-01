@@ -12,6 +12,10 @@ This is a socket server built on top of SocketAsyncEvents.
 
 ## Change Notes
 
+### 2.0.0-beta3
+
+* (Breaking) Now include the number of active connections in the watchdog.
+
 ### 2.0.0-beta2
 
 * (Breaking) Now include the server configuration in the watchdog (for when you need reference values or the custom object).
