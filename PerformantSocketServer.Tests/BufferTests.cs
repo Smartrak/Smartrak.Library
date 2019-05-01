@@ -67,7 +67,7 @@ namespace PerformantSocketServer.Tests
 		[Test]
 		public void TestConnection()
 		{
-			var listenSettings = new SocketListenerSettings
+			var listenSettings = new SocketListenerSettings<IListenerStateData>
 			{
 				LocalEndPoint = new IPEndPoint(IPAddress.Any, TestPort),
 				MaxConnections = 10,
@@ -81,9 +81,9 @@ namespace PerformantSocketServer.Tests
 				MaxTaskDelay = 3000,
 			};
 
-			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData>();
+			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData, IListenerStateData>();
 
-			using (var socketListener = new SocketListener<TestingSocketStateData>(listenSettings, mockMessageHandler))
+			using (var socketListener = new SocketListener<TestingSocketStateData, IListenerStateData>(listenSettings, mockMessageHandler))
 			{
 				socketListener.StartListen();
 
@@ -110,7 +110,7 @@ namespace PerformantSocketServer.Tests
 		[Test]
 		public void BufferOverflow()
 		{
-			var listenSettings = new SocketListenerSettings
+			var listenSettings = new SocketListenerSettings<IListenerStateData>
 			{
 				LocalEndPoint = new IPEndPoint(IPAddress.Any, TestPort),
 				MaxConnections = 10,
@@ -124,8 +124,8 @@ namespace PerformantSocketServer.Tests
 				MaxTaskDelay = 3000,
 			};
 
-			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData>();
-			using (var socketListener = new SocketListener<TestingSocketStateData>(listenSettings, mockMessageHandler))
+			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData, IListenerStateData>();
+			using (var socketListener = new SocketListener<TestingSocketStateData, IListenerStateData>(listenSettings, mockMessageHandler))
 			{
 				socketListener.StartListen();
 
@@ -171,7 +171,7 @@ namespace PerformantSocketServer.Tests
 		[Test]
 		public void ReusedBufferIsEmpty()
 		{
-			var listenSettings = new SocketListenerSettings
+			var listenSettings = new SocketListenerSettings<IListenerStateData>
 			{
 				LocalEndPoint = new IPEndPoint(IPAddress.Any, TestPort),
 				MaxConnections = 2,
@@ -185,24 +185,38 @@ namespace PerformantSocketServer.Tests
 				MaxTaskDelay = 3000,
 			};
 			const double ticksPerSecond = 10000000.0;
-			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData>();
-			Mock<IServerTrace> tracer = new Mock<IServerTrace>();
-			tracer.Setup(x => x.Sending(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>())).Callback<IdentityUserToken, IPEndPoint, int>((a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sending {c} bytes"));
-			tracer.Setup(x => x.Sent(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>())).Callback<IdentityUserToken, IPEndPoint, int>((a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sent {c} bytes"));
-			tracer.Setup(x => x.TimingOutConnection(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Timed out connection."));
-			tracer.Setup(x => x.StartListen(It.IsAny<SocketListenerSettings>())).Callback<SocketListenerSettings>(a => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Listener started: {JsonConvert.SerializeObject(a)}"));
-			tracer.Setup(x => x.Dispose()).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Disposed."));
-			tracer.Setup(x => x.QueuedTask(It.IsAny<IdentityUserToken>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Queued"));
-			tracer.Setup(x => x.StartingTask(It.IsAny<IdentityUserToken>(), It.IsAny<DateTime>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Started"));
-			tracer.Setup(x => x.FailedTask(It.IsAny<IdentityUserToken>(), It.IsAny<Exception>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Failed"));
-			tracer.Setup(x => x.ExpiredTask(It.IsAny<IdentityUserToken>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Expired"));
-			tracer.Setup(x => x.CompletedTask(It.IsAny<IdentityUserToken>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Completed"));
-			tracer.Setup(x => x.Received(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback<IdentityUserToken, IPEndPoint, byte[], int, int>((a, b, c, d, e) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Data Received: {e}"));
-			tracer.Setup(x => x.HandleAccept(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>())).Callback<IdentityUserToken, IPEndPoint>((a, b) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Connection accepted"));
-			tracer.Setup(x => x.HandleBadAccept(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<SocketError>())).Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Bad SocketAccept"));
-			tracer.Setup(x => x.ClosingConnection(It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<SocketError>())).Callback<IdentityUserToken, IPEndPoint, bool, bool, SocketError>((a, b, c, d, e) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Closing Connection: ToldToClose: {c} ClosedByClient:{d} CloseReason:{e}"));
+			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData, IListenerStateData>();
+			Mock<IServerTrace<IListenerStateData>> tracer = new Mock<IServerTrace<IListenerStateData>>();
+			tracer.Setup(x => x.Sending(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, int>((f, a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sending {c} bytes"));
+			tracer.Setup(x => x.Sent(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, int>((f, a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sent {c} bytes"));
+			tracer.Setup(x => x.TimingOutConnection(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Timed out connection."));
+			tracer.Setup(x => x.StartListen(It.IsAny<SocketListenerSettings<IListenerStateData>>()))
+				.Callback<SocketListenerSettings<IListenerStateData>>(a => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Listener started: {JsonConvert.SerializeObject(a)}"));
+			tracer.Setup(x => x.Dispose(It.IsAny<IListenerStateData>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Disposed."));
+			tracer.Setup(x => x.QueuedTask(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Queued"));
+			tracer.Setup(x => x.StartingTask(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<DateTime>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Started"));
+			tracer.Setup(x => x.FailedTask(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<Exception>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Failed"));
+			tracer.Setup(x => x.ExpiredTask(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Expired"));
+			tracer.Setup(x => x.CompletedTask(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Task Completed"));
+			tracer.Setup(x => x.Received(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, byte[], int, int>((f, a, b, c, d, e) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Data Received: {e}"));
+			tracer.Setup(x => x.HandleAccept(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint>((f, a, b) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Connection accepted"));
+			tracer.Setup(x => x.HandleBadAccept(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<SocketError>()))
+				.Callback(() => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Bad SocketAccept"));
+			tracer.Setup(x => x.ClosingConnection(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<SocketError>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, bool, bool, SocketError>((f, a, b, c, d, e) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Closing Connection: ToldToClose: {c} ClosedByClient:{d} CloseReason:{e}"));
 
-			using (var socketListener = new SocketListener<TestingSocketStateData>(listenSettings, mockMessageHandler, tracer.Object))
+			using (var socketListener = new SocketListener<TestingSocketStateData, IListenerStateData>(listenSettings, mockMessageHandler, tracer.Object))
 			{
 				socketListener.StartListen();
 
@@ -290,7 +304,7 @@ namespace PerformantSocketServer.Tests
 		[TestCase(true, true)]
 		public void TestConnectionCloseAfterProcess(bool sendDataInResponse, bool disconnectOnceDone)
 		{
-			var listenSettings = new SocketListenerSettings
+			var listenSettings = new SocketListenerSettings<IListenerStateData>
 			{
 				LocalEndPoint = new IPEndPoint(IPAddress.Any, TestPort),
 				MaxConnections = 10,
@@ -304,12 +318,12 @@ namespace PerformantSocketServer.Tests
 				MaxTaskDelay = 3000,
 			};
 
-			var mockMessageHandler = new Moq.Mock<IMessageHandler<TestingSocketStateData>>();
+			var mockMessageHandler = new Moq.Mock<IMessageHandler<TestingSocketStateData, IListenerStateData>>();
 			mockMessageHandler.Setup(x => x.IsMessageComplete(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<TestingSocketStateData>())).Returns(() => true);
-			mockMessageHandler.Setup(x => x.HandleMessage(It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<object>(), It.IsAny<TestingSocketStateData>()))
+			mockMessageHandler.Setup(x => x.HandleMessage(It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<IListenerStateData> (), It.IsAny<TestingSocketStateData>()))
 				.Returns(() => new HandleMessageResponse { DisconnectOnceDone = disconnectOnceDone, ToSend = sendDataInResponse ? Encoding.ASCII.GetBytes("hello") : null });
 
-			using (var socketListener = new SocketListener<TestingSocketStateData>(listenSettings, mockMessageHandler.Object))
+			using (var socketListener = new SocketListener<TestingSocketStateData, IListenerStateData>(listenSettings, mockMessageHandler.Object))
 			{
 				socketListener.StartListen();
 

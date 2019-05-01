@@ -12,15 +12,15 @@ namespace PerformantSocketServer
 	/// <summary>
 	/// Times out low running connections
 	/// </summary>
-	internal class WatchDog<T> : IDisposable where T : ISocketStateData
+	internal class WatchDog<T, TU> : IDisposable where T : ISocketStateData where TU: IListenerStateData
 	{
 		private readonly HashSet<SocketAsyncEventArgs> _activeConnections;
-		private readonly SocketListenerSettings _settings;
+		private readonly SocketListenerSettings<TU> _settings;
 		private readonly CancellationTokenSource _cts;
-		private readonly IServerTrace _trace;
+		private readonly IServerTrace<TU> _trace;
 
 
-		public WatchDog(SocketListenerSettings settings, IServerTrace trace)
+		public WatchDog(SocketListenerSettings<TU> settings, IServerTrace<TU> trace)
 		{
 			_settings = settings;
 			_trace = trace;
@@ -102,7 +102,7 @@ namespace PerformantSocketServer
 
 					v.AcceptSocket.Close();
 
-					_trace.TimingOutConnection(token, ipep, buf, bufferOffset, receivedBytes, awaitTime - startTime, lockObtainedTime - awaitTime, connectionsCollectedTime - lockObtainedTime, ServerDiagnostics.Instance.Now - beforeClosingTime);
+					_trace.TimingOutConnection(_settings.CustomState, token, ipep, buf, bufferOffset, receivedBytes, awaitTime - startTime, lockObtainedTime - awaitTime, connectionsCollectedTime - lockObtainedTime, ServerDiagnostics.Instance.Now - beforeClosingTime);
 				}
 
 				// --- Logging / Debugging
@@ -137,7 +137,7 @@ namespace PerformantSocketServer
 			{
 				_activeConnections.Add(eventArgs);
 			}
-			_trace.IncrementWatchedConnections();
+			_trace.IncrementWatchedConnections(_settings.CustomState);
 		}
 
 		/// <summary>
@@ -150,7 +150,7 @@ namespace PerformantSocketServer
 			{
 				_activeConnections.Remove(eventArgs);
 			}
-			_trace.DecrementWatchedConnections();
+			_trace.DecrementWatchedConnections(_settings.CustomState);
 		}
 	}
 }

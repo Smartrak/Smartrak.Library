@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BufferManager.cs" />
     <Compile Include="DataHoldingUserToken.cs" />
+    <Compile Include="IListenerStateData.cs" />
     <Compile Include="IdentityUserToken.cs" />
     <Compile Include="IMessageHandler.cs" />
     <Compile Include="IServerTrace.cs" />

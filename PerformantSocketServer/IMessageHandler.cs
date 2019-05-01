@@ -2,7 +2,7 @@
 
 namespace PerformantSocketServer
 {
-	public interface IMessageHandler<T> where T : ISocketStateData
+	public interface IMessageHandler<T, TU> where T : ISocketStateData where TU : IListenerStateData
 	{
 		/// <summary>
 		/// Checks if recieved data represents a completed message
@@ -22,10 +22,10 @@ namespace PerformantSocketServer
 		/// <param name="buffer"> Shared message level buffer </param>
 		/// <param name="startIdx"> start of message segment </param>
 		/// <param name="length"> length of message segment </param>
-		/// <param name="socketCustomState"> Custom state that the socket listener was created with </param>
+		/// <param name="listenerStateData"> Custom state that the socket listener was created with </param>
 		/// <returns> Resposne message (or null if no response is to be sent - connection will be closed) </returns>
 		/// <param name="socketStateData">Custom data that is passed around throughout the lifetime of the connection</param>
-		HandleMessageResponse HandleMessage(IPEndPoint remoteEndPoint, byte[] buffer, int startIdx, int length, object socketCustomState, T socketStateData);
+		HandleMessageResponse HandleMessage(IPEndPoint remoteEndPoint, byte[] buffer, int startIdx, int length, TU listenerStateData, T socketStateData);
 	}
 
 	public class HandleMessageResponse

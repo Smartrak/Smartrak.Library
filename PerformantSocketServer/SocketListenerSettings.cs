@@ -2,7 +2,7 @@
 {
 	using System.Net;
 
-	public class SocketListenerSettings
+	public class SocketListenerSettings<TU>
 	{
 		/// <summary>
 		/// The maximum number of connections to handle simultaneously 
@@ -77,6 +77,6 @@
 		/// <summary>
 		/// A custom supplied object from whoever constructs this to pass down into the Socket Listener.
 		/// </summary>
-		public object CustomState { get; set; }
+		public TU CustomState { get; set; }
 	}
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PerformantSocketServer.Tests
 {
-	class TestMessageHandler<T> : IMessageHandler<T> where T : ISocketStateData
+	class TestMessageHandler<T, TU> : IMessageHandler<T, TU> where T : ISocketStateData where TU : IListenerStateData
 	{
 		public int HandledMessages { get; set; } = 0;
 
@@ -22,7 +22,7 @@ namespace PerformantSocketServer.Tests
 					buffer[startIdx + length - 4] == '\r';
 		}
 
-		public HandleMessageResponse HandleMessage(IPEndPoint remoteEndPoint, byte[] buffer, int startIdx, int length, object socketCustomState, T socketStateData)
+		public HandleMessageResponse HandleMessage(IPEndPoint remoteEndPoint, byte[] buffer, int startIdx, int length, TU listenerStateData, T socketStateData)
 		{
 			HandledMessages++;
 
