@@ -30,7 +30,7 @@ namespace PerformantSocketServer
 		{
 		}
 
-		public void Sending(TU listenerStateObject, IdentityUserToken connectionId, IPEndPoint remote, int bytesTransferred)
+		public void Sending(TU listenerStateObject, IdentityUserToken connectionId, IPEndPoint remote, byte[] toTransfer, int offset, int length)
 		{
 		}
 

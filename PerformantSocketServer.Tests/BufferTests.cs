@@ -187,8 +187,8 @@ namespace PerformantSocketServer.Tests
 			const double ticksPerSecond = 10000000.0;
 			var mockMessageHandler = new TestMessageHandler<TestingSocketStateData, IListenerStateData>();
 			Mock<IServerTrace<IListenerStateData>> tracer = new Mock<IServerTrace<IListenerStateData>>();
-			tracer.Setup(x => x.Sending(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>()))
-				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, int>((f, a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sending {c} bytes"));
+			tracer.Setup(x => x.Sending(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>()))
+				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, byte[], int, int>((f, a, b, c, d, e) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sending {c} bytes"));
 			tracer.Setup(x => x.Sent(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<int>()))
 				.Callback<IListenerStateData, IdentityUserToken, IPEndPoint, int>((f, a, b, c) => Console.WriteLine($"S[{DateTime.Now.Ticks / ticksPerSecond}]Sent {c} bytes"));
 			tracer.Setup(x => x.TimingOutConnection(It.IsAny<IListenerStateData>(), It.IsAny<IdentityUserToken>(), It.IsAny<IPEndPoint>(), It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))

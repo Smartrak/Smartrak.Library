@@ -16,7 +16,7 @@ namespace PerformantSocketServer
 		void Received(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length);
 		void ReceivedGreaterThanBuffer(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, byte[] recieveBuffer, int startIdx, int length);
 
-		void Sending(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, int bytesToTransfer);
+		void Sending(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, byte[] toTransfer, int offset, int length);
 		void Sent(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, int bytesSent);
 
 		void ClosingConnection(TU listenerStateObject, IdentityUserToken poolId, IPEndPoint remote, bool toldToCloseByHander, bool closedByClient, SocketError closeReason);

@@ -386,7 +386,7 @@ namespace PerformantSocketServer
 				Buffer.BlockCopy(token.WriteData, token.WriteDataBytesSent, workerEventArgs.Buffer, token.WriteBufferOffset, token.WriteDataBytesRemaining);
 
 				// --- Logging / Debugging
-				_trace.Sending(_settings.CustomState, token, workerEventArgs.GetRemoteIpEndPoint(), token.WriteDataBytesRemaining);
+				_trace.Sending(_settings.CustomState, token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.Buffer, token.WriteBufferOffset, token.WriteDataBytesRemaining);
 				// ---
 			}
 			else
@@ -399,7 +399,7 @@ namespace PerformantSocketServer
 				// We update the token.WriteDataBytesSent once the Sending has been confirmed.
 
 				// --- Logging / Debugging
-				_trace.Sending(_settings.CustomState, token, workerEventArgs.GetRemoteIpEndPoint(), _settings.IoBufferSize);
+				_trace.Sending(_settings.CustomState, token, workerEventArgs.GetRemoteIpEndPoint(), workerEventArgs.Buffer, token.WriteBufferOffset, _settings.IoBufferSize);
 				// ---
 			}
 

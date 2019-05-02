@@ -14,6 +14,10 @@ This is a socket server built on top of SocketAsyncEvents.
 
 ## Change Notes
 
+### 2.0.0-beta5
+
+* (Breaking) The data being sent is now sent to the Server Trace to enable logging.
+
 ### 2.0.0-beta4
 
 * The custom state object for the listener is now a generic `IListenerStateData`.  This further helps for when you have multiple instances of a socket listener.
