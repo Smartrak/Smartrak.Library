@@ -14,26 +14,14 @@ This is a socket server built on top of SocketAsyncEvents.
 
 ## Change Notes
 
-### 2.0.0-beta5
+### 2.0.0
 
 * (Breaking) The data being sent is now sent to the Server Trace to enable logging.
-
-### 2.0.0-beta4
-
 * The custom state object for the listener is now a generic `IListenerStateData`.  This further helps for when you have multiple instances of a socket listener.
 * (Breaking) `IListenerStateData` type is now in all the places where it was `object` before.
 * (Breaking) Most of the IServerTrace methods now also have the IListenerStateData object.
-
-### 2.0.0-beta3
-
 * (Breaking) Now include the number of active connections in the watchdog.
-
-### 2.0.0-beta2
-
 * (Breaking) Now include the server configuration in the watchdog (for when you need reference values or the custom object).
-
-### 2.0.0-beta1
-
 * (Breaking) Can now indicate the behaviour of the socket after processing is complete.  Before, no data to send back meant closing the socket.  You can now send back no data and continue to listen.
 * (Breaking) Added support for a very loosely typed connection state object to track state across a connection while it's open (for example to log application state data that only shows up when it first talks)
 * Added a custom object for the SocketListenerSettings so that multiple instances of the listener can have some kind of unique state to identify it by.
